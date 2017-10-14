@@ -15,14 +15,13 @@ var users = require('./routes/users');
 // const passport = require('passport');
 // const session = require('express-session');
 // const MongoStore = require('connect-mongo')(session);
-// const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 //
 // const auth = require('./auth');
 //
 // const index = require('./routes/index');
-// const db = require('./routes/db');
-// const upload = require('./routes/upload');
-//
+const db = require('./routes/db');
+const upload = require('./routes/upload');
 const app = express();
 
 // view engine setup
@@ -37,7 +36,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 //
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
@@ -62,18 +60,18 @@ app.use('/users', users);
 
 //app.use('/', index);
 //app.use('/', auth.router);
-//app.use('/db', db);
-//app.use('/upload', upload);
-//app.get('/protected', ensureLoggedIn('/login'), function(req, res, next) {
-//  res.render('protected');
-//});
+app.use('/db', db);
+app.use('/upload', upload);
+app.get('/protected', ensureLoggedIn('/login'), function(req, res, next) {
+ res.render('protected');
+});
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  let err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+// app.use(function(req, res, next) {
+//   let err = new Error('Not Found');
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

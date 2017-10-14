@@ -3,18 +3,21 @@ html,body {
   font-family: 'Open Sans', serif;
 }
 .hero.is-primary {
-  background: #56ab2f;
-  background: -webkit-linear-gradient(to right, #a8e063, #56ab2f);
-  background: linear-gradient(to right, #a8e063, #56ab2f);
+  background: #39424e;
+  background: -webkit-linear-gradient(to right, #183356, #39424e);
+  /*background: linear-gradient(to right, #183356, #39424e);*/
+  /*background: linear-gradient(to right, #a8e063, #56ab2f);*/
 }
 .hero-body .container {
   max-width: 700px;
 }
 .hero-body .title {
-  color: hsl(192,17%,99%) !important;
+  /*color: hsl(192,17%,99%) !important;*/
+  color:hsl(214, 16%, 26%) !important;
 }
 .hero-body .subtitle {
-  color: hsl(192,17%,99%) !important;
+  /*color: hsl(192,17%,99%) !important;*/
+  color:hsl(214, 16%, 26%) !important;
   padding-top: 2rem;
   line-height: 1.5;
 }
@@ -56,3 +59,15 @@ html,body {
   justify-content: center;
   flex-direction: column;
 }
+
+
+/*.buttonHover {
+    background-color: black;
+    color: white;
+    border: 2px solid #f44336;
+}
+
+.buttonHover:hover {
+    background-color: #f44336;
+    color: black;
+}*/
