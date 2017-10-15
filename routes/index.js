@@ -46,6 +46,63 @@ router.post('/saveNote', function(req, res, next){
 });
 
 
+
+//get all the notebooks of the User
+//    GET: /user/UserID/notebook
+
+//add a notebook for a specific user.
+//    POST :  /user/userId/notebook
+
+
+//___________________Notebook_________________________
+
+//get all notes specific to a user and notebook
+//  GET:   /user/UserID/notebook/nbk_id/notes
+
+//get a note for a particular user and notebook
+//    GET : /user/userId/notebook/nbk_id/notes/note_id
+
+//add a note for a particular user and notebook
+//   POST : /user/userId/notebook/nbk_id/notes/note_id
+
+// edit a note for a particular user and notebook
+// PUT /user/userId/notebook/nbk_id/notes/note_id
+
+//_____________________FlashCards__________________
+
+//get all flashcards specific to a user and notebook
+//  GET:   /user/UserID/flashcards/nbk_id/flash
+
+//get a flashcard for a particular user and notebook
+//    GET : /user/userId/notebook/nbk_id/flash/flash_id
+
+//add a flashcard for a particular user and notebook
+//   POST : /user/userId/notebook/nbk_id/flash/flash_id
+
+// edit a flashcard for a particular user and notebook
+// PUT /user/userId/notebook/nbk_id/flash/flash_id
+
+
+//_________________Notes + Flash_____________________
+
+// get all the flashcards for a particular notebook and Notes
+// GET :  /user/userId/notebook/nbk_id/notes/note_id/flash
+
+
+
+
+
+
+
+//get a
+
+
+
+
+
+//save a note for a
+
+
 module.exports = router;
 
 
