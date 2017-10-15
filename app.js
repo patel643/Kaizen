@@ -24,9 +24,27 @@ const db = require('./routes/db');
 const upload = require('./routes/upload');
 const app = express();
 
+
+var exphbs = require('express-handlebars');
+
+// Create an instance of the express-handlebars
+// If you want to pass any option offered by express-handlebar module
+// do it inside the create() in the handlebars.js file
+var handlebars  = require('./helpers/handlebars.js')(exphbs);
+
+// The handlebars variable now has an object called engine.
+// Use that to define your app.engine
+// As said before, you don't need to define any options here.
+// Everything is defined in the create() in handlebars.js
+app.engine('hbs', handlebars.engine);
+
+// If you are using a different extension, you can change hbs to whatever you are using.
+app.set('view engine', 'hbs');
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+//app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
