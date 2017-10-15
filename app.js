@@ -24,6 +24,16 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+var exphbs  = require('express-handlebars');
+
+app.engine('hbs', exphbs({defaultLayout: 'layout', extname: '.hbs', helpers: { // This was missing
+    json:function(context) {
+      return JSON.stringify(context).replace(/"/g, '&quot;');
+    },
+    substring:function(context) {
+      return context.substring(0,200)+"...";
+    }
+}}));
 app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
