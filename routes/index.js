@@ -3,11 +3,27 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', {
-    user: req.user
-  });
+
+  if(res.locals.login){
+
+    req.db.collection('usernotecollection').find({"name": req.user.displayName}).toArray(function(err, results){
+    console.log(results);
+    res.render('index', {
+      user: req.user,
+      data: results,
+      title:'Keizen'
+    });
+    });
+  }
+  else{
+    res.render('index',{user:req.user});
+  }
+
+
+
 });
 
+<<<<<<< HEAD
 router.get('/home', function(req, res, next) {
   var xite = items["notebooks"];
   console.log(items["notebooks"][0]["notes"]);
@@ -30,6 +46,8 @@ router.post('/saveNote', function(req, res, next){
   });
 });
 
+=======
+>>>>>>> 6e2f12ae58c8b5589fcefaeb05a0b82c66530a02
 
 module.exports = router;
 

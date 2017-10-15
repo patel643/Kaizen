@@ -1,0 +1,36 @@
+//return format this is not a project file
+{
+  "email_verified": false,
+  "email": "ravin047@umn.edu",
+  "clientID": "zuvXeSYqZ9b656WQ1DWhPxyUMkYIxjX4",
+  "updated_at": "2017-10-14T11:49:30.018Z",
+  "name": "ravin047@umn.edu",
+  "picture": "https://s.gravatar.com/avatar/6f459a3f5493a363a2fcaa8bdd8e8966?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fra.png",
+  "user_id": "auth0|59e1f9c99914f169f64ee9eb",
+  "nickname": "ravin047",
+  "identities": [
+    {
+      "user_id": "59e1f9c99914f169f64ee9eb",
+      "provider": "auth0",
+      "connection": "Username-Password-Authentication",
+      "isSocial": false
+    }
+  ],
+  "created_at": "2017-10-14T11:49:29.615Z",
+  "sub": "auth0|59e1f9c99914f169f64ee9eb"
+}
+
+
+Domain - wdevils.auth0.com
+Client ID- 9TBkOe8pFlVUpwm_htTJoaP-8a5Mm_vR
+Client secret - M9dh_0gvWYcK4fpSHVvrMTlelrXpLzq__z8FlEehsgkciibHEf1rHe3a540JbBIR
+app- Default App
+
+
+Commands
+1.Connect to mongo shell
+  mongo ds121015.mlab.com:21015/wdevils -u <dbuser> -p <dbpassword>
+2.Create database from  Json
+  mongoimport --db dbName --collection collectionName --file fileName.json
+  mongoimport -h ds012345.mlab.com:56789 -d dbname -c collectionname -u dbuser -p dbpassword --file filename.json
+  mongoimport -h ds121015.mlab.com:21015 -d wdevils -c usernotecollection -u kbr -p kbr123 --file /Users/kiranbangaloreravindra/Desktop/gitRepo/module-2-group-assignment-wonderdevils/misc/kaizen_json.json

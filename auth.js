@@ -14,7 +14,7 @@ passport.use(new Auth0Strategy(
     callbackURL: process.env.AUTH0_CALLBACK_URL
   },
   (accessToken, refreshToken, extraParams, profile, done) => {
-    // debug("auth0 strategy callback; profile: " + JSON.stringify(profile, null, 4));
+    debug("auth0 strategy callback; profile: " + JSON.stringify(profile, null, 4));
     return done(null, profile);
   }
 ));
