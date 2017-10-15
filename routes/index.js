@@ -23,7 +23,6 @@ router.get('/', function(req, res, next) {
 
 });
 
-<<<<<<< HEAD
 router.get('/home', function(req, res, next) {
   var xite = items["notebooks"];
   console.log(items["notebooks"][0]["notes"]);
@@ -46,8 +45,6 @@ router.post('/saveNote', function(req, res, next){
   });
 });
 
-=======
->>>>>>> 6e2f12ae58c8b5589fcefaeb05a0b82c66530a02
 
 module.exports = router;
 
