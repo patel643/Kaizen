@@ -4,7 +4,7 @@ const express = require('express');
 const passport = require('passport');
 const Auth0Strategy = require('passport-auth0');
 
-debug(`auth0: domain=${process.env.AUTH0_DOMAIN}`)
+//debug(`auth0: domain=${process.env.AUTH0_DOMAIN}`)
 
 passport.use(new Auth0Strategy(
   {
@@ -14,7 +14,7 @@ passport.use(new Auth0Strategy(
     callbackURL: process.env.AUTH0_CALLBACK_URL
   },
   (accessToken, refreshToken, extraParams, profile, done) => {
-    debug("auth0 strategy callback; profile: " + JSON.stringify(profile, null, 4));
+    //debug("auth0 strategy callback; profile: " + JSON.stringify(profile, null, 4));
     return done(null, profile);
   }
 ));

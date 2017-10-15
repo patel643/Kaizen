@@ -3,11 +3,27 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  console.log(req.user);
 
-  if(res.locals.login){
-
+  // This if is required cos in logout flow I have req.user undefined and I cant query db.
+  if(req.user){
     req.db.collection('usernotecollection').find({"name": req.user.displayName}).toArray(function(err, results){
+    console.log("Earlier")
     console.log(results);
+    //If my database not got this user. I create a dummmy user and insert to db.
+    if(results.length == 0){
+        results =  {
+        "name": String(req.user.displayName),
+        "description": "",
+        "joiningDate": String(new Date()),
+        "notebooks": [],
+        "flashcards": []
+      }
+      console.log("Later");
+      console.log(results);
+      req.db.collection('usernotecollection').insert(results);
+      console.log('User ' + req.user.displayName + 'created successfuly');
+    }
     res.render('index', {
       user: req.user,
       data: results,
