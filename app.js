@@ -5,11 +5,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-const index = require('./routes/index');
 var users = require('./routes/users');
 
-
+const index = require('./routes/index');
 const expressMongoDb = require('express-mongo-db');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
@@ -20,8 +18,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 //Exposing all custom js for Application
 const auth = require('./auth');
-const db = require('./routes/db');
-const upload = require('./routes/upload');
 
 //Initialize express
 const app = express();
@@ -37,16 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-// catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   let err = new Error('Not Found');
-//   err.status = 404;
-//   next(err);
-// });
-
-
+//The mongo DB URI specified at .env
 app.use(expressMongoDb(process.env.DB_URI));
 app.use(
   session({
@@ -65,22 +52,24 @@ app.use(function(req, res, next) {
   next();
 });
 
+//Attach custom js with the routes.
 app.use('/', index);
 app.use('/', auth.router);
-app.use('/db', db);
-app.use('/upload', upload);
-app.get('/protected', ensureLoggedIn('/login'), function(req, res, next) {
- res.render('protected');
-});
+
+/**
+* Note:
+  This is how you may want to call a user specific page
+    app.get('/protected', ensureLoggedIn('/login'), function(req, res, next) {
+     res.render('protected');
+    });
+*/
 
 // error handler
 app.use(function(err, req, res, next) {
   console.error(err);
-
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');
