@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+var ObjectId = require('mongodb').ObjectID;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
+  console.log(res);
   if(res.locals.login){
-
-    req.db.collection('usernotecollection').find({"name": req.user.displayName}).toArray(function(err, results){
-    console.log(results);
+  console.log("HUMMMMMMM");
+    req.db.collection('usernotecollection').find({"name": "bohooo" }).toArray(function(err, results){
+    //  console.log(results);
     res.render('index', {
       user: req.user,
       data: results,
@@ -23,7 +25,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.get('/home', function(req, res, next) {
+router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
   var xite = items["notebooks"];
   console.log(items["notebooks"][0]["notes"]);
   res.render('home', {
@@ -38,12 +40,32 @@ router.get('/notebook', function(req, res, next) {
   });
 });
 
+
+//get all the notebooks of the user
+router.get('/user/:userId/notebook', function(req, res, next){
+  console.log(req.params.userId);
+    req.db.collection('usernotecollection').find({"_id": ObjectId(req.params.userId)},  { notebooks: 1}).toArray(function(err, results){
+  //  console.log(results);
+    res.send(results[0].notebooks);
+  });
+});
+
+
+//add a notebook for a specific user
+router.post('/user/:userId/notebook', function(req, res, next){
+  req.db.collection('usernotecollection').updateOne({"_id": ObjectId(req.params.userId)}, {$set:{ "notebooks": req.body }}, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
+
 router.post('/saveNote', function(req, res, next){
   console.log(req.body.data);
   res.render('notebook', {
     user: req.user
   });
 });
+
 
 
 
