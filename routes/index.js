@@ -5,13 +5,6 @@ var ObjectId = require('mongodb').ObjectID;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-<<<<<<< HEAD
-  console.log(res);
-  if(res.locals.login){
-  console.log("HUMMMMMMM");
-    req.db.collection('usernotecollection').find({"name": "bohooo" }).toArray(function(err, results){
-    //  console.log(results);
-=======
   console.log(req.user);
 
   // This if is required cos in logout flow I have req.user undefined and I cant query db.
@@ -33,7 +26,6 @@ router.get('/', function(req, res, next) {
       req.db.collection('usernotecollection').insert(results);
       console.log('User ' + req.user.displayName + 'created successfuly');
     }
->>>>>>> e0397c65c79333fac71a43ce2720fef680b4f8f0
     res.render('index', {
       user: req.user,
       data: results,
