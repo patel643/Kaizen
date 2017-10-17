@@ -38,7 +38,9 @@ $(function(){
       var notebook = {
              "access": $('#access').val(),
              "notebookname": $('#notebookname').val(),
-             "description": $('#description').val(),
+             //"description": $('#description').val(),
+             "frequency": $('#frequency').val(),
+             "multiplier":$('#multiplier').val(),
              "notes": []
        };
        $.ajax({
@@ -49,6 +51,7 @@ $(function(){
           data: JSON.stringify(notebook)
         }).done(function() {
             $(".modal").removeClass("is-active");
+            location.reload();
         });
     });
 
