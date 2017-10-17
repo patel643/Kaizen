@@ -41,7 +41,8 @@ router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
   req.db.collection('usernotecollection').find({"_id": ObjectId('59e3a593734d1d62dcbe79c3')},  { notebooks: 1}).toArray(function(err, results){
     res.render('home', {
       user: req.user,
-      notebooks: results[0].notebooks
+      notebooks: results[0].notebooks,
+      items: results[0].notebooks[0].notes   //this has to be removed
     });
   });
 });
@@ -64,6 +65,15 @@ router.get('/user/:userId/notebook', function(req, res, next){
 //add a notebook for a specific user
 router.post('/user/:userId/notebook', function(req, res, next){
   req.db.collection('usernotecollection').updateOne({"_id": ObjectId(req.params.userId)}, {$push:{ "notebooks": req.body }}, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
+router.post('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
+  req.db.collection('usernotecollection').updateOne({ "_id": ObjectId(req.params.userId), "notebooks.notebookname": req.params.nbkName},
+      { "$push":
+          {"notebooks.$.notes": req.body}
+      }, function (err, documents) {
         res.send({ error: err, affected: documents });
     });
 });
@@ -106,7 +116,7 @@ router.post('/saveNote', function(req, res, next){
 //    GET : /user/userId/notebook/nbk_id/notes/note_id
 
 //add a note for a particular user and notebook
-//   POST : /user/userId/notebook/nbk_id/notes/note_id
+//   POST : /user/userId/notebook/nbk_id/notes
 
 // edit a note for a particular user and notebook
 // PUT /user/userId/notebook/nbk_id/notes/note_id
