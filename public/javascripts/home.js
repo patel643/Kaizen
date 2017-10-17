@@ -13,59 +13,43 @@ $(function(){
       $(".modal").addClass("is-active");
     };
 
-    //This is dummy call needs to be removed ASAP
     $("#addNotebook").click(function(){
-      console.log("called");
-      var data = [
-        {
-            "access": "public",
-            "notebookname": "notebook1",
-            "notes": [
-                {
-                    "name": "noteName",
-                    "content": "Blah Blah and important blah",
-                    "access": "public",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                },
-                {
-                    "name": "noteName2",
-                    "content": "New Blah and important latest blah",
-                    "access": "private",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                }
-            ]
-        },
-        {
-            "access": "public",
-            "notebookname": "notebook2",
-            "notes": [
-                {
-                    "name": "noteName",
-                    "content": "Blah Blah and important blah",
-                    "access": "public",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                },
-                {
-                    "name": "noteName2",
-                    "content": "New Blah and important latest blah",
-                    "access": "private",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                }
-            ]
-        }];
+      $(".modal").addClass("is-active");
+    });
+    //This is dummy call needs to be removed ASAP
+    // $("#addNotebook").click(function(){
+    //   var notebook = {
+    //         "access": "public",
+    //         "notebookname": "notebookUlalala",
+    //         "notes": []
+    //   };
+    //
+    //   $.ajax({
+    //     url: '/user/59e3a593734d1d62dcbe79c3/notebook',
+    //     type: 'POST',
+    //     dataType: 'json',
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(notebook)
+    //   });
+    //
+    // });
 
-      $.ajax({
-        url: '/user/59e3a593734d1d62dcbe79c3/notebook',
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(data)
-      });
-
+    $("#saveNoteBook").click(function(){
+      var notebook = {
+             "access": $('#access').val(),
+             "notebookname": $('#notebookname').val(),
+             "description": $('#description').val(),
+             "notes": []
+       };
+       $.ajax({
+          url: '/user/59e3a593734d1d62dcbe79c3/notebook',
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify(notebook)
+        }).done(function() {
+            $(".modal").removeClass("is-active");
+        });
     });
 
     $("#saveNote").click(function(){
