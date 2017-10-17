@@ -14,8 +14,13 @@ $(function(){
     };
 
     $("#addNotebook").click(function(){
-      $(".modal").addClass("is-active");
+      $(".notebookmodel").addClass("is-active");
     });
+
+    $("#addNote").click(function(){
+      $(".notemodel").addClass("is-active");
+    });
+
     //This is dummy call needs to be removed ASAP
     // $("#addNotebook").click(function(){
     //   var notebook = {
@@ -50,7 +55,7 @@ $(function(){
           contentType: 'application/json',
           data: JSON.stringify(notebook)
         }).done(function() {
-            $(".modal").removeClass("is-active");
+            $(".notebookmode2").removeClass("is-active");
             location.reload();
         });
     });
@@ -61,7 +66,7 @@ $(function(){
       var text = quill.getText();
       console.log("hohoho");
       console.log(text);
-      $(".modal").removeClass("is-active");
+      $(".notebookmodel").removeClass("is-active");
 
       $.ajax({
         url: '/saveNote',
@@ -77,6 +82,7 @@ $(function(){
   // });
 
   $(".modal-close").click(function() {
-    $(".modal").removeClass("is-active");
+    $(".notebookmodel").removeClass("is-active");
+    $(".notemodel").removeClass("is-active");
   });
 });
