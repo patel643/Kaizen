@@ -41,7 +41,7 @@
             <a>private</a>
           </p>
           {{#each notebooks}}
-            <a class="panel-block is-active">
+            <a href="/home?notebook={{this.notebookname}}" class="panel-block is-active">
               <span class="panel-icon">
                 <i class="fa fa-book"></i>
               </span>
@@ -169,18 +169,6 @@
       </footer>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
   <div id="model"class="modal notemodel">
     <div class="modal-background"></div>
     <div class="modal-card">

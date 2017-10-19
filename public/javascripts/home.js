@@ -53,24 +53,6 @@ $(function(){
 
     });
 
-    //This is dummy call needs to be removed ASAP
-    // $("#addNotebook").click(function(){
-    //   var notebook = {
-    //         "access": "public",
-    //         "notebookname": "notebookUlalala",
-    //         "notes": []
-    //   };
-    //
-    //   $.ajax({
-    //     url: '/user/59e3a593734d1d62dcbe79c3/notebook',
-    //     type: 'POST',
-    //     dataType: 'json',
-    //     contentType: 'application/json',
-    //     data: JSON.stringify(notebook)
-    //   });
-    //
-    // });
-
     $("#saveNoteBook").click(function(){
       var notebook = {
         "access": $('#access').val(),
@@ -112,7 +94,7 @@ $(function(){
     $("#editNote").click(function(){
       var content = quill.getText();
       $.ajax({
-        url: '/user/notebook/notebook1/notes/'+$('#noteName').val(),
+        url: '/user/notebook/notes/'+$('#noteName').val(),
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({content: content})
@@ -121,9 +103,6 @@ $(function(){
           location.reload();
       });
     });
-
-
-
 
   $(".modal-close").click(function() {
     $(".notebookmodel").removeClass("is-active");

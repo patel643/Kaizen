@@ -94,22 +94,22 @@ router.post('/user/notebook/:nbkName/notes', function(req, res, next){
 
 //right now this is basically deleting all notes
 //For all update/deleting of notes, we will be now modifying the entire bunch of notes for the notebookname
-router.put('/user/notebook/:nbkName/notes/:noteName', function(req, res, next){
+router.put('/user/notebook/notes/:noteName', function(req, res, next){
   //extract all notes for give particular notebook
 
   //Query to get all notes for a particular user
   req.db.collection('usernotecollection').find({
       "name": req.user.displayName,
-    }, { "notebooks.notebookname":  req.params.nbkName,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
+    }, { "notebooks.notebookname":  notebook,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
         //res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
-        var allNotes = getObjects(results, 'notebookname', req.params.nbkName)[0].notes;
+        var allNotes = getObjects(results, 'notebookname', notebook)[0].notes;
         for(var i=0; i<allNotes.length; i++){
             if(allNotes[i].name == req.params.noteName){
               allNotes[i].content = req.body.content;
             }
         }
         //Now again make a call to the db and push back all the notes to the particular notebook
-        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": req.params.nbkName},
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
             {
               "$set":
                 {"notebooks.$.notes": allNotes}
