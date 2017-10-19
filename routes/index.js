@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var ObjectId = require('mongodb').ObjectID;
-
+var notebook = {};
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // This if is required cos in logout flow I have req.user undefined and I cant query db.
@@ -39,11 +39,23 @@ router.get('/', function(req, res, next) {
 //This function needs serious refactoring
 router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
   req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
-    res.render('home', {
-      user: req.user,
-      notebooks: results[0].notebooks,
-      items: results[0].notebooks[0].notes   //this has to be removed
-    });
+
+    if(req.query.notebook){
+      notebook = req.query.notebook;
+      var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      res.render('home', {
+        user: req.user,
+        notebooks: results[0].notebooks,
+        items: notes   //this has to be removed
+      });
+    }else{
+      notebook = results[0].notebooks[0].notebookname;
+      res.render('home', {
+        user: req.user,
+        notebooks: results[0].notebooks,
+        items: results[0].notebooks[0].notes   //this has to be removed
+      });
+    }
   });
 });
 
@@ -70,7 +82,8 @@ router.post('/user/notebook', function(req, res, next){
 
 //adding notes to a notebook
 router.post('/user/notebook/:nbkName/notes', function(req, res, next){
-  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": req.params.nbkName},
+  console.log(req.notebook);
+  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
       { "$push":
           {"notebooks.$.notes": req.body}
       }, function (err, documents) {
