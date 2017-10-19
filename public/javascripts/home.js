@@ -6,7 +6,7 @@ $(function(){
 
     $('.notebook').click(function(){
       var notebookName = $(this).text();
-      var url = "/user/59e3a593734d1d62dcbe79c3/notebook/notebook1/notes";
+      var url = "/user/59e29fd5444470d14194012a/notebook/notebook1/notes";
       $.get(url)
       .done(function( data ) {
         var dat = { items : data};
@@ -21,6 +21,10 @@ $(function(){
       theme: 'snow'
     });
 
+    var n_quill = new Quill('#n_editor', {
+      theme: 'snow'
+    });
+
     note = function(note, name) { //now has global scope.
       $('#noteName').val(name);
       console.log(name);
@@ -28,12 +32,24 @@ $(function(){
       $(".notemodel").addClass("is-active");
     };
 
+    deleteNote = function(noteName) {
+      $.ajax({
+        url: '/user/notebook/notebook1/notes/noteName',
+        type: 'PUT',
+        contentType: 'application/json'
+      }).done(function() {
+          $(".notebookmodel").removeClass("is-active");
+          location.reload();
+      });
+    }
+
     $("#addNotebook").click(function(){
       $(".notebookmodel").addClass("is-active");
     });
 
     $("#addNote").click(function(){
-      $(".notemodel").addClass("is-active");
+      $(".n_notemodel").addClass("is-active");
+      $("#n_noteName").val('');
 
     });
 
@@ -57,7 +73,7 @@ $(function(){
 
     $("#saveNoteBook").click(function(){
       var notebook = {
-             "access": $('#access').val(),
+        "access": $('#access').val(),
              "notebookname": $('#notebookname').val(),
              //"description": $('#description').val(),
              "frequency": $('#frequency').val(),
@@ -65,7 +81,7 @@ $(function(){
              "notes": []
        };
        $.ajax({
-          url: '/user/59e3a593734d1d62dcbe79c3/notebook',
+          url: '/user/notebook',
           type: 'POST',
           dataType: 'json',
           contentType: 'application/json',
@@ -77,13 +93,13 @@ $(function(){
     });
 
     $("#saveNote").click(function(){
-      var note =  { "name": $('#noteName').val(),
-                    "content": quill.getText(),
+      var note =  { "name": $('#n_noteName').val(),
+                    "content": n_quill.getText(),
                     "access": "public",
                     "createdDate": "2011-08-02T06:01:15.941Z",
                     "updatedDate": "2011-08-02T06:01:15.941Z" };
       $.ajax({
-        url: '/user/59e3a593734d1d62dcbe79c3/notebook/notebook1/notes',
+        url: '/user/notebook/notebook1/notes',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(note)
@@ -93,13 +109,31 @@ $(function(){
       });
     });
 
+    $("#editNote").click(function(){
+      var content = quill.getText();
+      $.ajax({
+        url: '/user/notebook/notebook1/notes/'+$('#noteName').val(),
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({content: content})
+      }).done(function() {
+          $(".notebookmodel").removeClass("is-active");
+          location.reload();
+      });
+    });
+
+
+
+
   $(".modal-close").click(function() {
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
+    $(".n_notemodel").removeClass("is-active");
   });
 
   $(".cancelModel").click(function() {
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
+    $(".n_notemodel").removeClass("is-active");
   });
 });

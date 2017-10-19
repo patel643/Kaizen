@@ -38,7 +38,7 @@ router.get('/', function(req, res, next) {
 
 //This function needs serious refactoring
 router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
-  req.db.collection('usernotecollection').find({"_id": ObjectId('59e3a593734d1d62dcbe79c3')},  { notebooks: 1}).toArray(function(err, results){
+  req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
     res.render('home', {
       user: req.user,
       notebooks: results[0].notebooks,
@@ -54,26 +54,72 @@ router.get('/notebook', function(req, res, next) {
   });
 });
 
-//get all the notebooks of the user
-router.get('/user/:userId/notebook', function(req, res, next){
-  console.log(req.params.userId);
-    req.db.collection('usernotecollection').find({"_id": ObjectId(req.params.userId)},  { notebooks: 1}).toArray(function(err, results){
+//get all the notebooks of the user     //username is picked from req.user.displayName
+router.get('/user/notebook', function(req, res, next){
+    req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
     res.send(results[0].notebooks);
   });
 });
 
 //add a notebook for a specific user
-router.post('/user/:userId/notebook', function(req, res, next){
-  req.db.collection('usernotecollection').updateOne({"_id": ObjectId(req.params.userId)}, {$push:{ "notebooks": req.body }}, function (err, documents) {
+router.post('/user/notebook', function(req, res, next){
+  req.db.collection('usernotecollection').updateOne({"name": req.user.displayName}, {$push:{ "notebooks": req.body }}, function (err, documents) {
         res.send({ error: err, affected: documents });
     });
 });
 
-router.post('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
-  req.db.collection('usernotecollection').updateOne({ "_id": ObjectId(req.params.userId), "notebooks.notebookname": req.params.nbkName},
+//adding notes to a notebook
+router.post('/user/notebook/:nbkName/notes', function(req, res, next){
+  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": req.params.nbkName},
       { "$push":
           {"notebooks.$.notes": req.body}
       }, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
+
+//right now this is basically deleting all notes
+//For all update/deleting of notes, we will be now modifying the entire bunch of notes for the notebookname
+router.put('/user/notebook/:nbkName/notes/:noteName', function(req, res, next){
+  //extract all notes for give particular notebook
+
+  //Query to get all notes for a particular user
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname":  req.params.nbkName,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
+        //res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+        var allNotes = getObjects(results, 'notebookname', req.params.nbkName)[0].notes;
+        for(var i=0; i<allNotes.length; i++){
+            if(allNotes[i].name == req.params.noteName){
+              allNotes[i].content = req.body.content;
+            }
+        }
+        //Now again make a call to the db and push back all the notes to the particular notebook
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": req.params.nbkName},
+            {
+              "$set":
+                {"notebooks.$.notes": allNotes}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+  });
+});
+
+//U can test any query here and view results in the browser
+router.get('/test', function(req, res, next){
+
+    req.db.collection('usernotecollection').find({
+        "name": req.user.displayName,
+      }, { "notebooks.notebookname": "notebook1",'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
+          res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+    });
+});
+
+router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){
+  req.db.collection('usernotecollection').remove({ "name": req.user.displayName,
+   "notebooks.notebookname": req.params.nbkName, "notebooks.notebookname.notes.name": req.params.noteName},
+    function (err, documents) {
         res.send({ error: err, affected: documents });
     });
 });
@@ -82,7 +128,7 @@ router.post('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
 
 router.get('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
   req.db.collection('usernotecollection').find({
-      "_id": ObjectId(req.params.userId),
+    "name": req.user.displayName,
     }, { "notebooks.notebookname": "notebook1",'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
         res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
   });
@@ -94,9 +140,6 @@ router.post('/saveNote', function(req, res, next){
     user: req.user
   });
 });
-
-
-
 
 //get all the notebooks of the User
 //    GET: /user/UserID/notebook
@@ -121,12 +164,7 @@ router.post('/saveNote', function(req, res, next){
 // edit a note for a particular user and notebook
 // PUT /user/userId/notebook/nbk_id/notes/note_id
 
-
-
-
-
 module.exports = router;
-
 
 function getObjects(obj, key, val) {
     var objects = [];

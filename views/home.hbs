@@ -106,7 +106,7 @@
               <p>
                 <strong>{{this.name}}</strong> <small>{{this.createdDate}}</small>
                 <br>
-                {{substring this.content}}
+                {{ this.content}}
               </p>
             </div>
             <nav class="level is-mobile">
@@ -128,7 +128,9 @@
       </div>
     </div>
   </div>
-  <div id="model"class="modal notemodel">
+
+
+  <div id="model"class="modal n_notemodel">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -139,13 +141,13 @@
         <div class="field">
           <label class="label">Name</label>
           <div class="control has-icons-right">
-            <input class="input is-success" id="noteName" type="text">
+            <input class="input is-success" id="n_noteName" type="text">
             <span class="icon is-small is-right">
               <i class="fa fa-check"></i>
             </span>
           </div>
         </div>
-        <div id="editor">
+        <div id="n_editor">
           <p>Hi there !</p>
           <p>This is where <strong>your ideas</strong> come Alive</p>
           <p><br></p>
@@ -167,6 +169,58 @@
       </footer>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="model"class="modal notemodel">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Edit Note</p>
+        <button class="modal-close" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control has-icons-right">
+            <input class="input is-success" id="noteName" type="text" disabled>
+            <span class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
+          </div>
+        </div>
+        <div id="editor">
+          <p>Hi there !</p>
+          <p>This is where <strong>your ideas</strong> come Alive</p>
+          <p><br></p>
+        </div>
+       </section>
+      <footer class="modal-card-foot">
+        <button id="editNote" class="button is-success">Save changes</button>
+        <button class="button cancelModel">Cancel</button>
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="answer">
+            Private
+          </label>
+          <label class="radio">
+            <input type="radio" name="answer">
+            Public
+          </label>
+        </div>
+      </footer>
+    </div>
+  </div>
+
   <div id="modal" class="modal notebookmodel">
   <div class="modal-background"></div>
   <div class="modal-card">
