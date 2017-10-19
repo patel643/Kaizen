@@ -59,13 +59,6 @@ router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
   });
 });
 
-//Why are you still here ??
-router.get('/notebook', function(req, res, next) {
-  res.render('notebook', {
-    user: req.user
-  });
-});
-
 //get all the notebooks of the user     //username is picked from req.user.displayName
 router.get('/user/notebook', function(req, res, next){
     req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
@@ -91,7 +84,6 @@ router.post('/user/notebook/:nbkName/notes', function(req, res, next){
     });
 });
 
-
 //right now this is basically deleting all notes
 //For all update/deleting of notes, we will be now modifying the entire bunch of notes for the notebookname
 router.put('/user/notebook/notes/:noteName', function(req, res, next){
@@ -106,6 +98,7 @@ router.put('/user/notebook/notes/:noteName', function(req, res, next){
         for(var i=0; i<allNotes.length; i++){
             if(allNotes[i].name == req.params.noteName){
               allNotes[i].content = req.body.content;
+              allNotes[i].text = req.body.text;
             }
         }
         //Now again make a call to the db and push back all the notes to the particular notebook
@@ -154,29 +147,6 @@ router.post('/saveNote', function(req, res, next){
   });
 });
 
-//get all the notebooks of the User
-//    GET: /user/UserID/notebook
-
-//add a notebook for a specific user.
-//    POST :  /user/userId/notebook
-
-
-//___________________Notebook_________________________
-
-//NOT NEEDED
-//get all notes specific to a user and notebook
-//  GET:   /user/UserID/notebook/nbk_id/notes
-
-//NOT NEEDED
-//get a note for a particular user and notebook
-//    GET : /user/userId/notebook/nbk_id/notes/note_id
-
-//add a note for a particular user and notebook
-//   POST : /user/userId/notebook/nbk_id/notes
-
-// edit a note for a particular user and notebook
-// PUT /user/userId/notebook/nbk_id/notes/note_id
-
 module.exports = router;
 
 function getObjects(obj, key, val) {
@@ -192,65 +162,6 @@ function getObjects(obj, key, val) {
     return objects;
 }
 
-var items ={
-	"name": "UserNameKiran",
-	"description": "Notes from AI 1 class",
-	"joiningDate": "2011-08-02T06:01:15.941Z",
-	"notebooks": [
-        {
-            "access": "public",
-            "notebookname": "notebook1",
-            "notes": [
-                {
-                    "name": "noteName",
-                    "content": "Blah Blah and important blah",
-                    "access": "public",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                },
-                {
-                    "name": "noteName2",
-                    "content": "New Blah and important latest blah",
-                    "access": "private",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                }
-            ]
-        },
-        {
-            "access": "public",
-            "notebookname": "notebook2",
-            "notes": [
-                {
-                    "name": "noteName",
-                    "content": "Blah Blah and important blah",
-                    "access": "public",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                },
-                {
-                    "name": "noteName2",
-                    "content": "New Blah and important latest blah",
-                    "access": "private",
-                    "createdDate": "2011-08-02T06:01:15.941Z",
-                    "updatedDate": "2011-08-02T06:01:15.941Z"
-                }
-            ]
-        }
-    ],
-	"flashcards": [{
-			"name": "flasCardName",
-			"content": "FlashCard to Understand all the Blahs",
-			"notebook": "notebookName",
-			"createdDate": "2011-08-02T06:01:15.941Z",
-			"updatedDate": "2011-08-02T06:01:15.941Z"
-		},
-		{
-			"name": "flasCardName2",
-			"content": "FlashCard to Understand all the Blahs and remember them",
-			"notebook": "notebookName",
-			"createdDate": "2011-08-02T06:01:15.941Z",
-			"updatedDate": "2011-08-02T06:01:15.941Z"
-		}
-	]
-} ;
+// function sort_date(a, b) {
+//     return new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime();
+// }
