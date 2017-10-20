@@ -39,7 +39,6 @@ router.get('/', function(req, res, next) {
 //This function needs serious refactoring
 router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
   req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
-
     if(req.query.notebook){
       notebook = req.query.notebook;
       var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
@@ -74,7 +73,7 @@ router.post('/user/notebook', function(req, res, next){
 });
 
 //adding notes to a notebook
-router.post('/user/notebook/:nbkName/notes', function(req, res, next){
+router.post('/user/notebook/notes', function(req, res, next){
   console.log(req.notebook);
   req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
       { "$push":
@@ -121,31 +120,25 @@ router.get('/test', function(req, res, next){
           res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
     });
 });
-
-router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){
-  req.db.collection('usernotecollection').remove({ "name": req.user.displayName,
-   "notebooks.notebookname": req.params.nbkName, "notebooks.notebookname.notes.name": req.params.noteName},
-    function (err, documents) {
-        res.send({ error: err, affected: documents });
-    });
-});
+//
+// router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){
+//   req.db.collection('usernotecollection').remove({ "name": req.user.displayName,
+//    "notebooks.notebookname": req.params.nbkName, "notebooks.notebookname.notes.name": req.params.noteName},
+//     function (err, documents) {
+//         res.send({ error: err, affected: documents });
+//     });
+// });
 
 //___________________Notes________________________
 
-router.get('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
-  req.db.collection('usernotecollection').find({
-    "name": req.user.displayName,
-    }, { "notebooks.notebookname": "notebook1",'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
-        res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
-  });
-});
+// router.get('/user/:userId/notebook/:nbkName/notes', function(req, res, next){
+//   req.db.collection('usernotecollection').find({
+//     "name": req.user.displayName,
+//     }, { "notebooks.notebookname": "notebook1",'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
+//         res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+//   });
+// });
 
-router.post('/saveNote', function(req, res, next){
-  console.log(req.body.data);
-  res.render('notebook', {
-    user: req.user
-  });
-});
 
 module.exports = router;
 
