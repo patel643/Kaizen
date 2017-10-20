@@ -48,11 +48,15 @@ router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
         items: notes   //this has to be removed
       });
     }else{
-      notebook = results[0].notebooks[0].notebookname;
+      //console.log(results);
+      var noteBookResult = results[0];
+      notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
+      var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
+      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
       res.render('home', {
         user: req.user,
-        notebooks: results[0].notebooks,
-        items: results[0].notebooks[0].notes   //this has to be removed
+        notebooks: notebooks,
+        items: items   //this has to be removed
       });
     }
   });
