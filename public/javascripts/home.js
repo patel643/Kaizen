@@ -22,11 +22,9 @@ $(function(){
 
     deleteNote = function(noteName) {
       $.ajax({
-        url: '/user/notebook/notebook1/notes/noteName',
-        type: 'PUT',
-        contentType: 'application/json'
+        url: '/user/notebook/notes/'+noteName,
+        type: 'DELETE'
       }).done(function() {
-          $(".notebookmodel").removeClass("is-active");
           location.reload();
       });
     }
@@ -44,7 +42,7 @@ $(function(){
     $("#saveNoteBook").click(function(){
       var notebook = {
         "access": $('#access').val(),
-             "notebookname": $('#notebookname').val(),
+             "notebookname": $('#notebookname').val().trim(),
              //"description": $('#description').val(),
              "frequency": $('#frequency').val(),
              "multiplier":$('#multiplier').val(),
@@ -64,7 +62,7 @@ $(function(){
 
     $("#saveNote").click(function(){
       console.log(n_quill.getContents());
-      var note =  { "name": $('#n_noteName').val(),
+      var note =  { "name": $('#n_noteName').val().trim(),
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
                     "access": "public",

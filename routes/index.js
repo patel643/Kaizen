@@ -87,7 +87,6 @@ router.post('/user/notebook/notes', function(req, res, next){
 //For all update/deleting of notes, we will be now modifying the entire bunch of notes for the notebookname
 router.put('/user/notebook/notes/:noteName', function(req, res, next){
   //extract all notes for give particular notebook
-
   //Query to get all notes for a particular user
   req.db.collection('usernotecollection').find({
       "name": req.user.displayName,
@@ -113,13 +112,30 @@ router.put('/user/notebook/notes/:noteName', function(req, res, next){
 
 //U can test any query here and view results in the browser
 router.get('/test', function(req, res, next){
-
     req.db.collection('usernotecollection').find({
         "name": req.user.displayName,
       }, { "notebooks.notebookname": "notebook1",'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
           res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
     });
 });
+
+router.delete('/user/notebook/notes/:noteName', function(req, res, next){
+  console.log("Server has been reached");
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname": notebook,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
+        var allNotes = getObjects(results, 'notebookname', notebook)[0].notes;
+        findAndRemove(allNotes, 'name', req.params.noteName);
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+            {
+              "$set":
+                {"notebooks.$.notes": allNotes}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+  });
+});
+
 //
 // router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){
 //   req.db.collection('usernotecollection').remove({ "name": req.user.displayName,
@@ -158,3 +174,12 @@ function getObjects(obj, key, val) {
 // function sort_date(a, b) {
 //     return new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime();
 // }
+
+//Generic Function to delete any property's valuie in a Json Array.
+function findAndRemove(array, property, value) {
+  array.forEach(function(result, index) {
+    if(result[property] === value) {
+      array.splice(index, 1);
+    }
+  });
+}
