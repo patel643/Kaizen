@@ -159,6 +159,9 @@ router.delete('/user/notebook/notes/:noteName', function(req, res, next){
 //   });
 // });
 
+router.get('/reminders', function(req, res, next) {
+  res.render('reminders');
+});
 
 module.exports = router;
 
