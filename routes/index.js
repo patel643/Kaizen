@@ -87,6 +87,17 @@ router.post('/user/notebook/notes', function(req, res, next){
     });
 });
 
+//adding flashcards to a notebook
+router.post('/user/notebook/flashcards', function(req, res, next){
+  console.log(req.notebook);
+  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+      { "$push":
+          {"notebooks.$.flashcards": req.body}
+      }, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
 //right now this is basically deleting all notes
 //For all update/deleting of notes, we will be now modifying the entire bunch of notes for the notebookname
 router.put('/user/notebook/notes/:noteName', function(req, res, next){

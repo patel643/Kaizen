@@ -36,7 +36,10 @@ $(function(){
     $("#addNote").click(function(){
       $(".n_notemodel").addClass("is-active");
       $("#n_noteName").val('');
+    });
 
+    $("#addFlashcard").click(function(){
+      $(".n_flashmodel").addClass("is-active");
     });
 
     $("#saveNoteBook").click(function(){
@@ -60,8 +63,23 @@ $(function(){
         });
     });
 
+    $("#saveFlashCard").click(function(){
+      var flashCard = {"front": $('#n_flashFront').val().trim(),
+                       "back": $('#n_flashBack').val().trim(),
+                       "createdDate": new Date()
+                      };
+      $.ajax({
+        url: '/user/notebook/flashcards',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(flashCard)
+      }).done(function(){
+        $(".n_notemodel").removeClass("is-active");
+        location.reload();
+      });
+    });
+
     $("#saveNote").click(function(){
-      console.log(n_quill.getContents());
       var note =  { "name": $('#n_noteName').val().trim(),
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
@@ -97,11 +115,13 @@ $(function(){
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
     $(".n_notemodel").removeClass("is-active");
+    $(".n_flashmodel").removeClass("is-active");
   });
 
   $(".cancelModel").click(function() {
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
     $(".n_notemodel").removeClass("is-active");
+    $(".n_flashmodel").removeClass("is-active");
   });
 });
