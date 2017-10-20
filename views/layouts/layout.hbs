@@ -8,7 +8,7 @@
     <link rel="icon" href="/favicon.ico">
   </head>
   <body>
-    <nav class="navbar is-dark">
+    <nav class="navbar is-primary">
       <!--  Begin permanently fixed component like Keizen -->
       <div class=navbar-brand>
           <a class="navbar-item" href="../">
@@ -21,22 +21,37 @@
 
         <div class="navbar-menu">
          <div class="navbar-start">
-
-           <!-- <a class="nav-item is-active">
-             Home
-           </a>  Add the menu items here-->
+           <div class="tabs is-boxed">
+             <ul>
+               <li class="is-active">
+                 <a>
+                   <span class="icon is-small"><i class="fa fa-search"></i></span>
+                   <span>Explore</span>
+                 </a>
+               </li>
+               <li>
+                 <a>
+                   <span class="icon is-small"><i class="fa fa-book"></i></span>
+                   <span>Notebooks</span>
+                 </a>
+               </li>
+               <li>
+                 <a>
+                   <span class="icon is-small"><i class="fa fa-bolt"></i></span>
+                   <span>Revise</span>
+                 </a>
+               </li>
+               <li>
+                 <a>
+                   <span class="icon is-small"><i class="fa fa-bell"></i></span>
+                   <span>Reminders</span>
+                 </a>
+               </li>
+             </ul>
+           </div>
          </div>
          <div class="navbar-end">
              <div class="nav-item">
-               <div class="navbar-item">
-                 <p class="control has-icons-left">
-                    <input class="input is-small" type="text" placeholder="search">
-                    <span class="icon is-small is-left">
-                    <i class="fa fa-search"></i>
-                    </span>
-                 </p>
-               </div>
-
                {{#if user}}
                      <span class="nav-item">
                         <figure class="image is-16x16">
