@@ -3,6 +3,7 @@ var router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var ObjectId = require('mongodb').ObjectID;
 var notebook = {};
+var flashcards = {};
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // This if is required cos in logout flow I have req.user undefined and I cant query db.
@@ -198,6 +199,36 @@ router.delete('/user/notebook/flashcards/:flashName', function(req, res, next){
   });
 });
 
+
+
+
+
+//This function needs serious refactoring
+router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
+  req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
+    if(req.query.notebook){
+      notebook = req.query.notebook;
+      var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      res.render('flashcards', {
+        user: req.user,
+        notebooks: results[0].notebooks,
+        items: notes   //this has to be removed
+      });
+    }else{
+      //console.log(results);
+      var noteBookResult = results[0];
+      notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
+      var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
+      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      res.render('flashcards', {
+        user: req.user,
+        notebooks: notebooks,
+        items: items   //this has to be removed
+      });
+    }
+  });
+});
+
 //
 // router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){
 //   req.db.collection('usernotecollection').remove({ "name": req.user.displayName,
@@ -218,21 +249,26 @@ router.delete('/user/notebook/flashcards/:flashName', function(req, res, next){
 // });
 
 router.get('/reminders', function(req, res, next) {
+  var user=req.user.displayName;
+  var arr=[];
+
+   var remindata = req.db.collection('usernotecollection').find({"name":user});
+   remindata.each(function (err, doc) {
+
+    if (doc != null) {
+        console.dir(doc);
+        console.log(doc.notebooks.length);
+        for(var i=0;i<doc.notebooks.length;i++)
+        {
+          var temp=[doc.notebooks[i].frequency,doc.notebooks[i].multiplier];
+          arr.push(temp);
+        }
+        console.dir(arr);
+    }
+});
   res.render('reminders',{user: req.user.displayName});
 })
 
-router.post('/remind', function(req, res, next) {
-  var user=req.user.displayName;
- req.db.collection('usernotecollection').find(
-    {"name":user},
-    {"joiningDate" : 1,"notebooks.notebookname":1}).toArray(function(err, results){
-    //console.log("Earlier")
-    console.log(results);
-  });
-
-  //db.userdetails.find({"education":"M.C.A."},{"user_id" : 1,"password":1,
-  res.json(user);
-})
 
 
 module.exports = router;
