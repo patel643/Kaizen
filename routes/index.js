@@ -43,21 +43,25 @@ router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
     if(req.query.notebook){
       notebook = req.query.notebook;
       var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      var flashcards = getObjects(results, 'notebookname', req.query.notebook)[0].flashcards;
       res.render('home', {
         user: req.user,
         notebooks: results[0].notebooks,
-        items: notes   //this has to be removed
+        notes: notes,
+        flashcards: flashcards   //this has to be removed
       });
     }else{
       //console.log(results);
       var noteBookResult = results[0];
       notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
       var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
-      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      var notes = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      var flashcards = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].flashcards : [];
       res.render('home', {
         user: req.user,
         notebooks: notebooks,
-        items: items   //this has to be removed
+        notes: notes,
+        flashcards: flashcards    //this has to be removed
       });
     }
   });
@@ -83,6 +87,17 @@ router.post('/user/notebook/notes', function(req, res, next){
   req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
       { "$push":
           {"notebooks.$.notes": req.body}
+      }, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
+//adding flashcards to a notebook
+router.post('/user/notebook/flashcards', function(req, res, next){
+  console.log(req.notebook);
+  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+      { "$push":
+          {"notebooks.$.flashcards": req.body}
       }, function (err, documents) {
         res.send({ error: err, affected: documents });
     });
@@ -115,6 +130,32 @@ router.put('/user/notebook/notes/:noteName', function(req, res, next){
   });
 });
 
+
+//Editing a flashCard
+router.put('/user/notebook/flashcards/:flashName', function(req, res, next){
+  //extract all notes for give particular notebook
+  //Query to get all notes for a particular user
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname":  notebook,'notebooks.flashcards':1, '_id': 0}).toArray(function (err, results) {
+        //res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+        var allFlashCards = getObjects(results, 'notebookname', notebook)[0].flashcards;
+        for(var i=0; i<allFlashCards.length; i++){
+            if(allFlashCards[i].front == req.params.flashName){
+              allFlashCards[i].back = req.body.back;
+            }
+        }
+        //Now again make a call to the db and push back all the notes to the particular notebook
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+            {
+              "$set":
+                {"notebooks.$.flashcards": allFlashCards}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+  });
+});
+
 //U can test any query here and view results in the browser
 router.get('/test', function(req, res, next){
     req.db.collection('usernotecollection').find({
@@ -125,7 +166,6 @@ router.get('/test', function(req, res, next){
 });
 
 router.delete('/user/notebook/notes/:noteName', function(req, res, next){
-  console.log("Server has been reached");
   req.db.collection('usernotecollection').find({
       "name": req.user.displayName,
     }, { "notebooks.notebookname": notebook,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
@@ -135,6 +175,24 @@ router.delete('/user/notebook/notes/:noteName', function(req, res, next){
             {
               "$set":
                 {"notebooks.$.notes": allNotes}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+      });
+});
+
+
+//Deleting A FlashCard
+router.delete('/user/notebook/flashcards/:flashName', function(req, res, next){
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname": notebook,'notebooks.flashcards':1, '_id': 0}).toArray(function (err, results) {
+        var allFlashCards = getObjects(results, 'notebookname', notebook)[0].flashcards;
+        findAndRemove(allFlashCards, 'front', req.params.flashName);
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+            {
+              "$set":
+                {"notebooks.$.flashcards": allFlashCards}
             }, function (err, documents) {
               res.send({ error: err, affected: documents });
           });
@@ -191,8 +249,22 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
 // });
 
 router.get('/reminders', function(req, res, next) {
-  res.render('reminders');
-});
+  res.render('reminders',{user: req.user.displayName});
+})
+
+router.post('/remind', function(req, res, next) {
+  var user=req.user.displayName;
+ req.db.collection('usernotecollection').find(
+    {"name":user},
+    {"joiningDate" : 1,"notebooks.notebookname":1}).toArray(function(err, results){
+    //console.log("Earlier")
+    console.log(results);
+  });
+
+  //db.userdetails.find({"education":"M.C.A."},{"user_id" : 1,"password":1,
+  res.json(user);
+})
+
 
 module.exports = router;
 

@@ -20,11 +20,26 @@ $(function(){
       $(".notemodel").addClass("is-active");
     };
 
+    editFlashCard = function(flashcard) {
+      $('#e_flashFront').val(flashcard.front);
+      $('#e_flashBack').val(flashcard.back);
+      $(".e_flashmodel").addClass("is-active");
+    };
+
     deleteNote = function(noteName) {
       $.ajax({
         url: '/user/notebook/notes/'+noteName,
         type: 'DELETE'
-      }).done(function() {
+        }).done(function() {
+          location.reload();
+      });
+    }
+
+    deleteFlashCard = function(flashcard) {
+      $.ajax({
+        url: '/user/notebook/flashcards/'+flashcard.front,
+        type: 'DELETE'
+        }).done(function(){
           location.reload();
       });
     }
@@ -36,7 +51,16 @@ $(function(){
     $("#addNote").click(function(){
       $(".n_notemodel").addClass("is-active");
       $("#n_noteName").val('');
+    });
 
+    $("#addFlashcard").click(function(){
+      $(".n_flashmodel").addClass("is-active");
+      $("#n_flashFront").val('');
+      $("#n_flashBack").val('');
+    });
+
+    $("#editFlashcard").click(function(){
+      $(".e_flashmodel").addClass("is-active");
     });
 
     $("#saveNoteBook").click(function(){
@@ -60,8 +84,23 @@ $(function(){
         });
     });
 
+    $("#saveFlashCard").click(function(){
+      var flashCard = {"front": $('#n_flashFront').val().trim(),
+                       "back": $('#n_flashBack').val().trim(),
+                       "createdDate": new Date()
+                      };
+      $.ajax({
+        url: '/user/notebook/flashcards',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(flashCard)
+      }).done(function(){
+        $(".n_notemodel").removeClass("is-active");
+        location.reload();
+      });
+    });
+
     $("#saveNote").click(function(){
-      console.log(n_quill.getContents());
       var note =  { "name": $('#n_noteName').val().trim(),
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
@@ -93,14 +132,32 @@ $(function(){
       });
     });
 
+    $("#eFlashCard").click(function(){
+      var flashCard = {"back": $('#e_flashBack').val().trim()};
+      $.ajax({
+        url: '/user/notebook/flashcards/'+$('#e_flashFront').val(),
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(flashCard)
+      }).done(function() {
+          $(".e_flashmodel").removeClass("is-active");
+          location.reload();
+      });
+    });
+
+
   $(".modal-close").click(function() {
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
     $(".n_notemodel").removeClass("is-active");
+    $(".n_flashmodel").removeClass("is-active");
+    $(".e_flashmodel").removeClass("is-active");
   });
 
   $(".cancelModel").click(function() {
     $(".notebookmodel").removeClass("is-active");
     $(".notemodel").removeClass("is-active");
     $(".n_notemodel").removeClass("is-active");
+    $(".n_flashmodel").removeClass("is-active");
+    $(".e_flashmodel").removeClass("is-active");
   });
