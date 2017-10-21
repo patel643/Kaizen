@@ -34,3 +34,11 @@ Commands
   mongoimport --db dbName --collection collectionName --file fileName.json
   mongoimport -h ds012345.mlab.com:56789 -d dbname -c collectionname -u dbuser -p dbpassword --file filename.json
   mongoimport -h ds121015.mlab.com:21015 -d wdevils -c usernotecollection -u kbr -p kbr123 --file /Users/kiranbangaloreravindra/Desktop/gitRepo/module-2-group-assignment-wonderdevils/misc/kaizen_json.json
+3. db.usernotecollection.createIndex( { name: "text", description: "text" } )
+Used to create Index on both the fields
+You can check index by db.usernotecollection.getIndexes()
+To drop  db.collection.dropIndex("*")
+db.ranking.ensureIndex({"$**":"text"})
+db.usernotecollection.aggregate({$unwind:"$notebooks"},{$project:{"notebooks.notebookname":1}})
+
+db.usernotecollection.aggregate([{$match:{$text:{$search:"Java"}}},{$sort:{score:{$meta:"textScore"}}},{$project:{"notebooks.notes":1,_id:0}}])

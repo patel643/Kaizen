@@ -1,0 +1,52 @@
+db.usernotecollection.aggregate(
+[
+{"$unwind":"$notebooks"},
+{"$unwind":"$notebooks.notes"},
+{"$match":{$text:{$search:"Java"}}},
+{"$project":{
+    "name":1,
+    "notebooks.notes.name":1,
+    "notebooks.notes.content":1
+    }
+}
+])
+
+
+db.usernotecollection.aggregate(
+[
+ {"$unwind":"$notebooks"},
+ {"$unwind":"$notebooks.notes"},
+ {"$match":{"notebooks.notes.name":"Java Topic"}},
+ {"$project":{
+      "name":1,
+      "notebooks.notes.name":1,
+      "notebooks.notes.content":1
+      }
+}
+])
+
+db.usernotecollection.aggregate(
+[
+{"$unwind":"$notebooks"},
+{"$unwind":"$notebooks.notes"},
+{"$match":{"$text":{"$search":"Java"}}},
+{"$project":{
+    "name":1,
+    "notebooks.notes.name":1,
+    "notebooks.notes.content":1
+    }
+}
+])
+
+ db.usernotecollection.aggregate(
+ [
+ {"$unwind":"$notebooks"},
+ {"$unwind":"$notebooks.notes"},
+ {"$match":{"notebooks.notes.name":/Java/,"$and":[{"notebooks.notes.access":"public"}]}},
+ {"$project":{
+    "name":1,
+    "notebooks.notebookname":1,
+    "notebooks.notes.name":1,
+    "notebooks.notes.text":1
+}
+} ])

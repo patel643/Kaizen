@@ -1,9 +1,70 @@
+
+
 var express = require('express');
 var router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var ObjectId = require('mongodb').ObjectID;
 var notebook = {};
 var flashcards = {};
+
+
+/*explore page*/
+router.get('/features',function(req,res,next){
+  res.render('featureDetails.hbs',{layout:false});
+  console.log("explore page loaded");
+  });
+
+
+router.post('/search/:searchkey',function(req,res,next){
+  console.log("searching");
+  console.log(req.params.searchkey);
+  var key = "/"+req.params.searchkey+"/";
+  console.log(key);
+  // var access= (req.user)? "private":"public";
+
+  req.db.collection('usernotecollection').aggregate(
+  [
+  {"$unwind":"$notebooks"},
+  {"$unwind":"$notebooks.notes"},
+  {"$match":{"notebooks.notes.name":/Java/,"$and":[{"notebooks.notes.access":"public"}]}},
+  {"$project":{
+     "name":1,
+     "notebooks.notebookname":1,
+     "notebooks.notes.name":1,
+     "notebooks.notes.text":1
+ }
+ } ],
+  function(err, results) {
+      console.log(results);
+    }
+ );
+
+ var newresults ={};
+ // if(req.user){
+ //   var  newresults= req.db.collection('usernotecollection').aggregate(
+ //   [
+ //   {"$unwind":"$notebooks"},
+ //   {"$unwind":"$notebooks.notes"},
+ //   {"$let":
+ //    {
+ //      vars: { rkey: "$$key"},
+ //
+ //    },
+ //  } ,
+ //   {"$match":{"notebooks.notes.name":"$rkey","$and":[{"notebooks.notes.access":"public"}]}},
+ //   {"$project":{
+ //      "name":1,
+ //      "notebooks.notebookname":1,
+ //      "notebooks.notes.name":1,
+ //      "notebooks.notes.text":1
+ //    }
+ //   }],
+ //   function(err, results) {
+ //        console.log(results);
+ //      });
+ // }
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // This if is required cos in logout flow I have req.user undefined and I cant query db.
@@ -228,6 +289,7 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
     }
   });
 });
+
 
 
 //
