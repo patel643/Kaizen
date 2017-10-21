@@ -180,12 +180,27 @@ router.get('/reminders', function(req, res, next) {
 
 router.post('/remind', function(req, res, next) {
   var user=req.user.displayName;
- req.db.collection('usernotecollection').find(
+/* req.db.collection('usernotecollection').find(
     {"name":user},
-    {"joiningDate" : 1,"notebooks.notebookname":1}).toArray(function(err, results){
+    {"joiningDate" : 1,"notebooks":1}).toArray(function(err, results){
     //console.log("Earlier")
     console.log(results);
-  });
+  });*/
+
+  req.db.collection('usernotecollection').find(
+     {"name":user}
+   )
+   var cursor = req.db.collection('usernotecollection').find({"name":user});
+   cursor.each(function (err, doc) {
+
+    if (doc != null) {
+        console.dir(doc);
+        var restaurant = doc.toObject(); // use restaurant object
+    } else {
+        callback();
+    }
+});
+
 
   //db.userdetails.find({"education":"M.C.A."},{"user_id" : 1,"password":1,
   res.json(user);
