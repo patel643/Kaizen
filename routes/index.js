@@ -248,26 +248,40 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
 //         res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
 //   });
 // });
-
+var arr=[];
 router.get('/reminders', function(req, res, next) {
   var user=req.user.displayName;
-  var arr=[];
 
    var remindata = req.db.collection('usernotecollection').find({"name":user});
    remindata.each(function (err, doc) {
 
     if (doc != null) {
         console.dir(doc);
-        console.log(doc.notebooks.length);
+        arr=[];
+        /*console.log(doc.notebooks.length);
         for(var i=0;i<doc.notebooks.length;i++)
         {
           var temp=[doc.notebooks[i].frequency,doc.notebooks[i].multiplier];
           arr.push(temp);
+        }*/
+      //  console.dir(JSON.stringify(doc.notebooks.notes));
+      console.log(doc.notebooks.length);
+        for(var i=0;i<doc.notebooks.length;i++)
+        {
+          console.log(doc.notebooks[i].notebookname);
+          console.log(doc.notebooks[i].notes.length);
+          for(var j=0;j<doc.notebooks[i].notes.length;j++){
+            if(doc.notebooks[i].notes[j].revisionCount == undefined)
+              doc.notebooks[i].notes[j].revisionCount=2;
+            var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
+            arr.push(temp);
+          }
+
+
         }
-        console.dir(arr);
     }
-});
-  res.render('reminders',{user: req.user.displayName});
+});console.log(arr);
+  res.render('reminders',{user: req.user.displayName, arr:arr});
 })
 
 
