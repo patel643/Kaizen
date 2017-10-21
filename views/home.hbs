@@ -82,7 +82,7 @@
       <div class="columns">
         <div class="column">
             <div class="box">
-          {{#each items}}
+          {{#each notes}}
            <ul class="timeline">
              <li class="timeline-event">
                <label class="timeline-event-icon"></label>
@@ -110,13 +110,43 @@
         </div>
         </div>
         <div class="column">
-          Second column
+          <div class="box">
+             {{#each flashcards}}
+             <article class="media">
+               <div class="media-left">
+                 <figure class="image is-64x64">
+                   <img src="../images/flash.png" alt="Image">
+                 </figure>
+               </div>
+               <div class="media-content">
+                 <div class="content">
+                   <p>
+                     <strong>{{this.front}}</strong> <small>{{this.createdDate}}</small>
+                     <br>
+                     {{this.back}}
+                   </p>
+                 </div>
+                 <nav class="level is-mobile">
+                   <div class="level-left">
+                     <a onClick="" class="level-item">
+                       <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                     </a>
+                     <a class="level-item">
+                       <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                     </a>
+                     <a class="level-item">
+                       <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                     </a>
+                   </div>
+                 </nav>
+               </div>
+             </article>
+             {{/each}}
+        </div>
         </div>
       </div>
     </div>
   </div>
-
-
 
   <!--This is Modal part -->
   <div id="model" class="modal n_notemodel">
