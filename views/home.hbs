@@ -87,9 +87,9 @@
              <li class="timeline-event">
                <label class="timeline-event-icon"></label>
                <div class="timeline-event-copy">
-                 <div class="timeline-event-thumbnail">{{this.createdDate}}</div>
+                 <div class="timeline-event-thumbnail">{{filterDate this.createdDate}}</div>
                  <h1>{{this.name}}</h1>
-                 <p>{{ this.text}}</p>
+                 <p>{{substring this.text}}</p>
                  <nav class="level is-mobile">
                    <div class="level-left">
                      <a onClick="note({{{json this}}});" class="level-item">
@@ -121,11 +121,8 @@
                </div>
                <div class="media-content">
                  <div class="content">
-                   <p>
-                     <strong>{{this.front}}</strong> <small>{{this.createdDate}}</small>
-                     <br>
-                     {{this.back}}
-                   </p>
+                   <h1>{{this.front}}</h1>
+                   <p>{{ this.back }}</p>
                  </div>
                  <nav class="level is-mobile">
                    <div class="level-left">

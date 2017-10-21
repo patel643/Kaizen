@@ -333,11 +333,36 @@ router.get('/reminders', function(req, res, next) {
           console.log(doc.notebooks[i].notebookname);
           console.log(doc.notebooks[i].notes.length);
           for(var j=0;j<doc.notebooks[i].notes.length;j++){
-            if(doc.notebooks[i].notes[j].revisionCount == undefined)
-              doc.notebooks[i].notes[j].revisionCount=2;
-            var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
-            arr.push(temp);
+              if(doc.notebooks[i].notes[j].revisionCount == undefined)
+                doc.notebooks[i].notes[j].revisionCount=2;
+            //  console.log(new Date(doc.notebooks[i].notes[j].createdDate).getFullYear());
+              var cdate=new Date(doc.notebooks[i].notes[j].createdDate);
+              var cdated=new Date(doc.notebooks[i].notes[j].createdDate).getDate();
+              var cdatem=new Date(doc.notebooks[i].notes[j].createdDate).getMonth();
+              var cdatey=new Date(doc.notebooks[i].notes[j].createdDate).getFullYear();
+              cdate.setDate(cdate.getDate() + doc.notebooks[i].notes[j].revisionCount);
+              console.log(cdate);
+
+              //rmove this next line
+              cdate=new Date();
+              var tdate=(new Date());
+              if(+cdate == +tdate){
+                var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
+                arr.push(temp);
+              }
+          if(doc.notebooks[i].notes[j].revisionCount == 2)
+              {
+                console.log("in");
+                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.notes.name":doc.notebooks[i].notes[j].name },
+
+                  { "$set": { "notebooks.notes.revisionCount": Number((doc.notebooks[i].notes[j].revisionCount+6)) }}, function (err, documents) {
+                    console.log("err: "+err);
+                }
+                );
+              }
+
           }
+
 
 
         }
