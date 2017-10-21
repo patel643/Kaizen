@@ -249,36 +249,26 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
 // });
 
 router.get('/reminders', function(req, res, next) {
-  res.render('reminders',{user: req.user.displayName});
-})
-
-router.post('/remind', function(req, res, next) {
   var user=req.user.displayName;
-/* req.db.collection('usernotecollection').find(
-    {"name":user},
-    {"joiningDate" : 1,"notebooks":1}).toArray(function(err, results){
-    //console.log("Earlier")
-    console.log(results);
-  });*/
+  var arr=[];
 
-  req.db.collection('usernotecollection').find(
-     {"name":user}
-   )
-   var cursor = req.db.collection('usernotecollection').find({"name":user});
-   cursor.each(function (err, doc) {
+   var remindata = req.db.collection('usernotecollection').find({"name":user});
+   remindata.each(function (err, doc) {
 
     if (doc != null) {
         console.dir(doc);
-        var restaurant = doc.toObject(); // use restaurant object
-    } else {
-        callback();
+        console.log(doc.notebooks.length);
+        for(var i=0;i<doc.notebooks.length;i++)
+        {
+          var temp=[doc.notebooks[i].frequency,doc.notebooks[i].multiplier];
+          arr.push(temp);
+        }
+        console.dir(arr);
     }
 });
-
-
-  //db.userdetails.find({"education":"M.C.A."},{"user_id" : 1,"password":1,
-  res.json(user);
+  res.render('reminders',{user: req.user.displayName});
 })
+
 
 
 module.exports = router;
