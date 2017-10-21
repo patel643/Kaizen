@@ -208,26 +208,27 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
   req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
     if(req.query.notebook){
       notebook = req.query.notebook;
-      var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      var flashcards = getObjects(results, 'notebookname', req.query.notebook)[0].flashcards;
       res.render('flashcards', {
         user: req.user,
         notebooks: results[0].notebooks,
-        items: notes   //this has to be removed
+        flashcards: flashcards   //this has to be removed
       });
     }else{
       //console.log(results);
       var noteBookResult = results[0];
       notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
       var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
-      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      var flashcards = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].flashcards : [];
       res.render('flashcards', {
         user: req.user,
         notebooks: notebooks,
-        items: items   //this has to be removed
+        flashcards: flashcards    //this has to be removed
       });
     }
   });
 });
+
 
 //
 // router.post('/user/:userId/notebook/:nbkName/notes/:noteName', function(req, res, next){

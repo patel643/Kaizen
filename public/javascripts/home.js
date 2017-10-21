@@ -160,3 +160,4 @@ $(function(){
     $(".n_flashmodel").removeClass("is-active");
     $(".e_flashmodel").removeClass("is-active");
   });
+});
