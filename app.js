@@ -31,7 +31,15 @@ app.engine('hbs', exphbs({defaultLayout: 'layout', extname: '.hbs', helpers: { /
       return JSON.stringify(context).replace(/"/g, '&quot;');
     },
     substring:function(context) {
-      return context.substring(0,200)+"...";
+      if(context){
+        return context.substring(0,200)+"...";
+      }
+    },
+    filterDate:function(timestamp) {
+      if(timestamp){
+        var d = new Date(timestamp);
+        return (d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear());
+      }
     }
 }}));
 app.set('view engine', 'hbs');
