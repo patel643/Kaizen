@@ -81,7 +81,7 @@
       </div>
       <div class="columns">
         <div class="column">
-            <div class="box">
+          <div class="box">
           {{#each notes}}
            <ul class="timeline">
              <li class="timeline-event">
@@ -109,6 +109,7 @@
           {{/each}}
         </div>
         </div>
+
         <div class="column">
           <div class="box">
              {{#each flashcards}}
@@ -128,10 +129,10 @@
                  </div>
                  <nav class="level is-mobile">
                    <div class="level-left">
-                     <a onClick="" class="level-item">
+                     <a onClick="editFlashCard({{{json this}}});" class="level-item">
                        <span class="icon is-small"><i class="fa fa-pencil"></i></span>
                      </a>
-                     <a class="level-item">
+                     <a onClick="deleteFlashCard({{{json this}}});" class="level-item">
                        <span class="icon is-small"><i class="fa fa-trash"></i></span>
                      </a>
                      <a class="level-item">
@@ -217,6 +218,38 @@
        </section>
       <footer class="modal-card-foot">
         <button id="saveFlashCard" class="button is-success">Save changes</button>
+        <button class="button cancelModel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <!--Edit A FlashCard -->
+  <div id="model" class="modal e_flashmodel">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Edit FlashCard</p>
+        <button class="modal-close" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Front</label>
+          <div class="control has-icons-right">
+            <input class="input is-success" id="e_flashFront" type="text" disabled>
+            <span class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Back</label>
+          <div class="control">
+            <textarea id="e_flashBack" class="textarea" placeholder="Write the meaning of your flashcard"></textarea>
+          </div>
+        </div>
+       </section>
+      <footer class="modal-card-foot">
+        <button id="eFlashCard" class="button is-success">Save changes</button>
         <button class="button cancelModel">Cancel</button>
       </footer>
     </div>
