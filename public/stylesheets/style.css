@@ -112,3 +112,21 @@ body {
     vertical-align:middle;
     width:200px;
 }
+
+.cardContainer{
+width: 350px;
+border: 1px solid gray;
+box-shadow: 1px 1px 3px #888;
+border-top: 10px solid green;
+max-height: 300px;
+padding-: 10px;
+margin: 10px;
+}
+
+#mainbox{
+  font-family: calibri;
+  box-sizing: border-box;
+  justify-content: center;
+  display: flex;
+flex-wrap: wrap;
+}
