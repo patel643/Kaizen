@@ -218,8 +218,22 @@ router.delete('/user/notebook/flashcards/:flashName', function(req, res, next){
 // });
 
 router.get('/reminders', function(req, res, next) {
-  res.render('reminders');
-});
+  res.render('reminders',{user: req.user.displayName});
+})
+
+router.post('/remind', function(req, res, next) {
+  var user=req.user.displayName;
+ req.db.collection('usernotecollection').find(
+    {"name":user},
+    {"joiningDate" : 1,"notebooks.notebookname":1}).toArray(function(err, results){
+    //console.log("Earlier")
+    console.log(results);
+  });
+
+  //db.userdetails.find({"education":"M.C.A."},{"user_id" : 1,"password":1,
+  res.json(user);
+})
+
 
 module.exports = router;
 
