@@ -60,22 +60,9 @@
       </div>
     </aside>
   <div class="column">
-      <div class="tabs is-centered">
-        <ul>
-          <li class="is-active">
-            <a>
-              <span class="icon is-small"><i class="fa fa-sticky-note"></i></span>
-              <span>Notes</span>
-            </a>
-          </li>
-          <li>
-            <a>
-              <span class="icon is-small"><i class="fa fa-bolt"></i></span>
-              <span>Flashcards</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+
+
+
       <div class="box">
       <!-- Main container -->
         <nav class="level">
@@ -85,46 +72,84 @@
                 <a id="addNote" class="button is-primary"><i class="fa fa-plus"></i> Note</a><br/><br/>
             </div>
           </div>
-
-          <!-- Right side -->
           <div class="level-right">
-            <input class="input" type="text" placeholder="Find a note">
-            <button onClick="note()" class="button">
-              Search
-            </button>
+            <div class="level-left">
+                <a id="addFlashcard" class="button is-primary"><i class="fa fa-plus"></i> Flashcard</a><br/><br/>
+            </div>
           </div>
         </nav>
       </div>
-      <div class="box">
-        {{#each items}}
-         <ul class="timeline">
-           <li class="timeline-event">
-             <label class="timeline-event-icon"></label>
-             <div class="timeline-event-copy">
-               <p class="timeline-event-thumbnail">{{this.createdDate}}
-               <nav class="level is-mobile">
-                 <div class="level-left">
-                   <a onClick="note({{{json this}}});" class="level-item">
-                     <span class="icon is-small"><i class="fa fa-pencil"></i></span>
-                   </a>
-                   <a onClick="deleteNote({{{json this.name}}});"class="level-item">
-                     <span class="icon is-small"><i class="fa fa-trash"></i></span>
-                   </a>
-                   <a class="level-item">
-                     <span class="icon is-small"><i class="fa fa-heart"></i></span>
-                   </a>
+      <div class="columns">
+        <div class="column">
+            <div class="box">
+          {{#each notes}}
+           <ul class="timeline">
+             <li class="timeline-event">
+               <label class="timeline-event-icon"></label>
+               <div class="timeline-event-copy">
+                 <p class="timeline-event-thumbnail">{{this.createdDate}}
+                 <nav class="level is-mobile">
+                   <div class="level-left">
+                     <a onClick="note({{{json this}}});" class="level-item">
+                       <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                     </a>
+                     <a onClick="deleteNote({{{json this.name}}});"class="level-item">
+                       <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                     </a>
+                     <a class="level-item">
+                       <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                     </a>
+                   </div>
+                 </nav></p>
+                 <h1>{{this.name}}</h1>
+                 <p>{{ this.text}}</p>
+               </div>
+             </li>
+           </ul>
+          {{/each}}
+        </div>
+        </div>
+        <div class="column">
+          <div class="box">
+             {{#each flashcards}}
+             <article class="media">
+               <div class="media-left">
+                 <figure class="image is-64x64">
+                   <img src="../images/flash.png" alt="Image">
+                 </figure>
+               </div>
+               <div class="media-content">
+                 <div class="content">
+                   <p>
+                     <strong>{{this.front}}</strong> <small>{{this.createdDate}}</small>
+                     <br>
+                     {{this.back}}
+                   </p>
                  </div>
-               </nav></p>
-               <h1>{{this.name}}</h1>
-               <p>{{ this.text}}</p>
-             </div>
-           </li>
-         </ul>
-        {{/each}}
+                 <nav class="level is-mobile">
+                   <div class="level-left">
+                     <a onClick="" class="level-item">
+                       <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                     </a>
+                     <a class="level-item">
+                       <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                     </a>
+                     <a class="level-item">
+                       <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                     </a>
+                   </div>
+                 </nav>
+               </div>
+             </article>
+             {{/each}}
+        </div>
+        </div>
       </div>
     </div>
   </div>
-  <div id="model"class="modal n_notemodel">
+
+  <!--This is Modal part -->
+  <div id="model" class="modal n_notemodel">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -163,6 +188,45 @@
       </footer>
     </div>
   </div>
+
+
+  <!-- New Flashcard -->
+  <div id="model" class="modal n_flashmodel">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">New FlashCard</p>
+        <button class="modal-close" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Front</label>
+          <div class="control has-icons-right">
+            <input class="input is-success" id="n_flashFront" type="text">
+            <span class="icon is-small is-right">
+              <i class="fa fa-check"></i>
+            </span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Back</label>
+          <div class="control">
+            <textarea id="n_flashBack" class="textarea" placeholder="Write the meaning of your flashcard"></textarea>
+          </div>
+        </div>
+       </section>
+      <footer class="modal-card-foot">
+        <button id="saveFlashCard" class="button is-success">Save changes</button>
+        <button class="button cancelModel">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+
+
+
+
+
   <div id="model"class="modal notemodel">
     <div class="modal-background"></div>
     <div class="modal-card">

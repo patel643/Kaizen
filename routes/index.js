@@ -42,21 +42,25 @@ router.get('/home', ensureLoggedIn('/login'), function(req, res, next) {
     if(req.query.notebook){
       notebook = req.query.notebook;
       var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      var flashcards = getObjects(results, 'notebookname', req.query.notebook)[0].flashcards;
       res.render('home', {
         user: req.user,
         notebooks: results[0].notebooks,
-        items: notes   //this has to be removed
+        notes: notes,
+        flashcards: flashcards   //this has to be removed
       });
     }else{
       //console.log(results);
       var noteBookResult = results[0];
       notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
       var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
-      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      var notes = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      var flashcards = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].flashcards : [];
       res.render('home', {
         user: req.user,
         notebooks: notebooks,
-        items: items   //this has to be removed
+        notes: notes,
+        flashcards: flashcards    //this has to be removed
       });
     }
   });
@@ -82,6 +86,17 @@ router.post('/user/notebook/notes', function(req, res, next){
   req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
       { "$push":
           {"notebooks.$.notes": req.body}
+      }, function (err, documents) {
+        res.send({ error: err, affected: documents });
+    });
+});
+
+//adding flashcards to a notebook
+router.post('/user/notebook/flashcards', function(req, res, next){
+  console.log(req.notebook);
+  req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+      { "$push":
+          {"notebooks.$.flashcards": req.body}
       }, function (err, documents) {
         res.send({ error: err, affected: documents });
     });
