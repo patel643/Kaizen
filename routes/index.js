@@ -129,6 +129,32 @@ router.put('/user/notebook/notes/:noteName', function(req, res, next){
   });
 });
 
+
+//Editing a flashCard
+router.put('/user/notebook/flashcards/:flashName', function(req, res, next){
+  //extract all notes for give particular notebook
+  //Query to get all notes for a particular user
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname":  notebook,'notebooks.flashcards':1, '_id': 0}).toArray(function (err, results) {
+        //res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+        var allFlashCards = getObjects(results, 'notebookname', notebook)[0].flashcards;
+        for(var i=0; i<allFlashCards.length; i++){
+            if(allFlashCards[i].front == req.params.flashName){
+              allFlashCards[i].back = req.body.back;
+            }
+        }
+        //Now again make a call to the db and push back all the notes to the particular notebook
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+            {
+              "$set":
+                {"notebooks.$.flashcards": allFlashCards}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+  });
+});
+
 //U can test any query here and view results in the browser
 router.get('/test', function(req, res, next){
     req.db.collection('usernotecollection').find({
@@ -139,7 +165,6 @@ router.get('/test', function(req, res, next){
 });
 
 router.delete('/user/notebook/notes/:noteName', function(req, res, next){
-  console.log("Server has been reached");
   req.db.collection('usernotecollection').find({
       "name": req.user.displayName,
     }, { "notebooks.notebookname": notebook,'notebooks.notes':1, '_id': 0}).toArray(function (err, results) {
@@ -149,6 +174,24 @@ router.delete('/user/notebook/notes/:noteName', function(req, res, next){
             {
               "$set":
                 {"notebooks.$.notes": allNotes}
+            }, function (err, documents) {
+              res.send({ error: err, affected: documents });
+          });
+      });
+});
+
+
+//Deleting A FlashCard
+router.delete('/user/notebook/flashcards/:flashName', function(req, res, next){
+  req.db.collection('usernotecollection').find({
+      "name": req.user.displayName,
+    }, { "notebooks.notebookname": notebook,'notebooks.flashcards':1, '_id': 0}).toArray(function (err, results) {
+        var allFlashCards = getObjects(results, 'notebookname', notebook)[0].flashcards;
+        findAndRemove(allFlashCards, 'front', req.params.flashName);
+        req.db.collection('usernotecollection').updateOne({ "name": req.user.displayName, "notebooks.notebookname": notebook},
+            {
+              "$set":
+                {"notebooks.$.flashcards": allFlashCards}
             }, function (err, documents) {
               res.send({ error: err, affected: documents });
           });
