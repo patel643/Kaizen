@@ -104,3 +104,4 @@ $(function(){
     $(".notemodel").removeClass("is-active");
     $(".n_notemodel").removeClass("is-active");
   });
+});

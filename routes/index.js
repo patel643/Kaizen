@@ -3,6 +3,7 @@ var router = express.Router();
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var ObjectId = require('mongodb').ObjectID;
 var notebook = {};
+var flashcards = {};
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // This if is required cos in logout flow I have req.user undefined and I cant query db.
@@ -137,6 +138,36 @@ router.delete('/user/notebook/notes/:noteName', function(req, res, next){
             }, function (err, documents) {
               res.send({ error: err, affected: documents });
           });
+  });
+});
+
+
+
+
+
+//This function needs serious refactoring
+router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
+  req.db.collection('usernotecollection').find({"name": req.user.displayName},  { notebooks: 1}).toArray(function(err, results){
+    if(req.query.notebook){
+      notebook = req.query.notebook;
+      var notes = getObjects(results, 'notebookname', req.query.notebook)[0].notes;
+      res.render('flashcards', {
+        user: req.user,
+        notebooks: results[0].notebooks,
+        items: notes   //this has to be removed
+      });
+    }else{
+      //console.log(results);
+      var noteBookResult = results[0];
+      notebook = (results[0].notebooks.length > 0) ? results[0].notebooks[0].notebookname : "";
+      var  notebooks = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks : [];
+      var items = (noteBookResult.notebooks.length > 0) ? noteBookResult.notebooks[0].notes : [];
+      res.render('flashcards', {
+        user: req.user,
+        notebooks: notebooks,
+        items: items   //this has to be removed
+      });
+    }
   });
 });
 
