@@ -12,8 +12,9 @@ $("#searchbutton").click(function() {
         contentType: 'application/json',
         data: JSON.stringify(val),
       }).done(function(data) {
-            $("#ajax-content").append(JSON.stringify(data));
-            console.log(data);
+            // $("#ajax-content").append(JSON.stringify(data));
+            // console.log(data);
+            $("#ajax-content").html(data);
       });
     });
 

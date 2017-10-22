@@ -16,17 +16,16 @@ router.get('/features',function(req,res,next){
 
 
 router.post('/search/:searchkey',function(req,res,next){
-  console.log("searching");
-  console.log(req.params.searchkey);
-  var key = "/"+req.params.searchkey+"/";
-  console.log(key);
-  //var access= (req.user)? "private":"public";
+  var key = new RegExp(req.params.searchkey);
+  console.log("searching for " + key);
 
+  var allResults = {};
+  //GET notes which are public notes
   req.db.collection('usernotecollection').aggregate(
   [
   {"$unwind":"$notebooks"},
   {"$unwind":"$notebooks.notes"},
-  {"$match":{"notebooks.notes.name":/Java/,"$and":[{"notebooks.notes.access":"public"}]}},
+  {"$match":{"notebooks.notes.name":{'$regex':key},"$and":[{"notebooks.notes.access":"public"}]}},
   {"$project":{
      "name":1,
      "notebooks.notebookname":1,
@@ -35,35 +34,40 @@ router.post('/search/:searchkey',function(req,res,next){
  }
  } ],
   function(err, results) {
-      console.log(results);
-      res.send(results);
+      //console.log(results);
+      allResults = results;
+      if(!req.user){
+        console.log('not logged in sending right now');
+        //res.send(allResults);
+        res.render('searchlist.hbs',{layout:false,notes: allResults});
+        console.log("searchlist loaded");
+      }
     }
  );
 
- var newresults ={};
- // if(req.user){
- //   var  newresults= req.db.collection('usernotecollection').aggregate(
- //   [
- //   {"$unwind":"$notebooks"},
- //   {"$unwind":"$notebooks.notes"},
- //   {"$let":
- //    {
- //      vars: { rkey: "$$key"},
- //
- //    },
- //  } ,
- //   {"$match":{"notebooks.notes.name":"$rkey","$and":[{"notebooks.notes.access":"public"}]}},
- //   {"$project":{
- //      "name":1,
- //      "notebooks.notebookname":1,
- //      "notebooks.notes.name":1,
- //      "notebooks.notes.text":1
- //    }
- //   }],
- //   function(err, results) {
- //        console.log(results);
- //      });
- // }
+ //If User is logged in get the private notes as well
+ if(req.user){
+   var dispN = new RegExp(req.user.displayName);
+   var  newresults= req.db.collection('usernotecollection').aggregate(
+   [
+   {"$unwind":"$notebooks"},
+   {"$unwind":"$notebooks.notes"},
+   {"$match":{"name":{'$regex':dispN},"notebooks.notes.name":{'$regex':key},"$and":[{"notebooks.notes.access":"private"}]}},
+   {"$project":{
+      "name":1,
+      "notebooks.notebookname":1,
+      "notebooks.notes.name":1,
+      "notebooks.notes.text":1
+    }
+   }],
+   function(err, results) {
+        allResults.push(results);
+        console.log('logged in sending later');
+        //res.send(allResults);
+        res.render('searchlist.hbs',{layout:false,notes: allResults});
+        console.log("searchlist loaded");
+      });
+ }
 });
 
 /* GET home page. */
