@@ -65,12 +65,12 @@ $(function(){
 
     $("#saveNoteBook").click(function(){
       var notebook = {
-        "access": $('#access').val(),
+             "access": $('#access').val(),
              "notebookname": $('#notebookname').val().trim(),
              //"description": $('#description').val(),
-             "frequency": $('#frequency').val(),
-             "multiplier":$('#multiplier').val(),
-             "notes": []
+             "revisionCount": 2,
+             "notes": [],
+             "flashcards":[]
        };
        $.ajax({
           url: '/user/notebook',
