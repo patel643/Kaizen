@@ -14,6 +14,10 @@
   <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
   <script src="//cdn.quilljs.com/1.3.3/quill.js"></script>
   <script src="//cdn.quilljs.com/1.3.3/quill.min.js"></script>
+  <script src="/javascripts/search.js" charset="utf-8"></script>
+
+
+
 
   <!-- Theme included stylesheets -->
   <link href="//cdn.quilljs.com/1.3.3/quill.snow.css" rel="stylesheet">
@@ -27,68 +31,18 @@
     </p>
   </div>
 
-  <section class="container">
-    <div class="columns features">
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image has-text-centered">
-              <i class="fa fa-edit"></i>
-          </div>
-          <div class="card-content">
-            <div class="content">
-              <h4>Create Notebooks </h4>
-              <p>Make a notebook of every topic you are learning. Put some interactive notes inside your notebook. And review them later, just like you read a blog or news article</p>
-              <p><a href="#">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image has-text-centered">
-              <i class="fa fa-flash"></i>
-          </div>
-          <div class="card-content">
-            <div class="content">
-              <h4>Create Flashcards</h4>
-              <p>For every topic you created, you have the option to add corresponding flashcards. Click on and flip flashcards to check if you remember the topic right! </p>
-              <p><a href="#">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="column is-4">
-        <div class="card">
-          <div class="card-image has-text-centered">
-              <i class="fa fa-bell-o"></i>
-          </div>
-          <div class="card-content">
-            <div class="content">
-              <h4>Create Reminders </h4>
-              <p>Set reminders to every topic you created in notebooks and select reminder dates. Click on reminders later and your topics will show up here.</p>
-              <p><a href="#">Learn more</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <section  class="container">
+    <div class="field is-grouped">
+      <p class="control is-expanded">
+        <input class="input" type="text" id="searcharea" placeholder="Search Notes ... ">
+      </p>
+      <p class="control">
+        <a class="button is-info" id ="searchbutton" >
+          Search
+        </a>
+      </p>
     </div>
-
-    <div class="columns">
-      <div class="column">
-        <img src="/images/ScreenShot-curve.png" alt="HTML5 Icon" style="width:840px;height:350px;">
-      </div>
-      <div class="column">
-        <iframe width="700" height="350" src="https://www.youtube.com/embed/cVf38y07cfk?ecver=1" frameborder="0" allowfullscreen></iframe>
-      </div>
-    </div>
-
-    <div class="intro column is-8 is-offset-2">
-      <div class="card-image has-text-centered">
-        <h2 class="title"> You lose most of your memory in the first couple of days!</h2><br>
-        <p class="subtitle">Remember to remind yourself to revise the awesome things you have learnt. We can also help you create revision shedules. Keep in mind, your unique memory strength will determine whether you retain half the information for 3 weeks or more, or less. Depending on what you’ve learned, especially classroom style! Repetition is easy enough – the more frequently we repeat something, the more likely it is to stick.  For this reason, one suggestion given to improve memory retention when taking a class is to review your notes and classwork regularly. Check out our awesome reminders and start reviewing your notes today! </p>
-  </div>
-
-
+    <div id="ajax-content">This is default text, which will be replaced</div>
   </section>
   <script async type="text/javascript" src="../js/bulma.js"></script>
 </body>
