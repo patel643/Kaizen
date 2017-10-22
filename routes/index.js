@@ -249,7 +249,7 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
 //   });
 // });
 var arr=[];
-router.get('/reminders', function(req, res, next) {
+router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
   var user=req.user.displayName;
 
    var remindata = req.db.collection('usernotecollection').find({"name":user});
@@ -290,18 +290,15 @@ router.get('/reminders', function(req, res, next) {
               }
           if(doc.notebooks[i].notes[j].revisionCount == 2)
               {
-                console.log("in");
-                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.notes.name":doc.notebooks[i].notes[j].name },
+                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.$[i].notes.$[j].name":doc.notebooks[i].notes[j].name },
 
-                  { "$set": { "notebooks.notes.revisionCount": Number((doc.notebooks[i].notes[j].revisionCount+6)) }}, function (err, documents) {
+                  { $set: { "notebooks.$[i].notes.$[j].createdDate": cdate }}, function (err, documents) {
                     console.log("err: "+err);
                 }
                 );
               }
 
           }
-
-
 
         }
     }
