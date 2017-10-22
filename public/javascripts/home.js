@@ -65,12 +65,12 @@ $(function(){
 
     $("#saveNoteBook").click(function(){
       var notebook = {
-        "access": $('#access').val(),
+             "access": $('#access').val(),
              "notebookname": $('#notebookname').val().trim(),
              //"description": $('#description').val(),
-             "frequency": $('#frequency').val(),
-             "multiplier":$('#multiplier').val(),
-             "notes": []
+
+             "notes": [],
+             "flashcards":[]
        };
        $.ajax({
           url: '/user/notebook',
@@ -105,7 +105,8 @@ $(function(){
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
                     "access": "public",
-                    "createdDate": new Date()};
+                    "createdDate": new Date(),
+                    "revisionCount": 2};
       $.ajax({
         url: '/user/notebook/notes',
         type: 'POST',
