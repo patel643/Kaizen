@@ -334,8 +334,7 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
           console.log(doc.notebooks[i].notebookname);
           console.log(doc.notebooks[i].notes.length);
           for(var j=0;j<doc.notebooks[i].notes.length;j++){
-              if(doc.notebooks[i].notes[j].revisionCount == undefined)
-                doc.notebooks[i].notes[j].revisionCount=2;
+
             //  console.log(new Date(doc.notebooks[i].notes[j].createdDate).getFullYear());
               var cdate=new Date(doc.notebooks[i].notes[j].createdDate);
               cdate.setDate(cdate.getDate() + doc.notebooks[i].notes[j].revisionCount);
@@ -345,12 +344,14 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
               var cdate=cdated+'/'+cdatem+'/'+cdatey;
               console.log(cdate);
 
-              //rmove this next line
+              //rmove these next few lines
               cdate=new Date();
               var cdated=cdate.getDate();
               var cdatem=cdate.getMonth();
               var cdatey=cdate.getFullYear();
               var cdate=cdated+'/'+cdatem+'/'+cdatey;
+              //
+
               var tdate=(new Date());
               var tdated=tdate.getDate();
               var tdatem=tdate.getMonth();
@@ -360,18 +361,38 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
                 var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
                 arr.push(temp);
               }
-          if(doc.notebooks[i].notes[j].revisionCount == 2)
-              {
-                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.$.notes.$.name":doc.notebooks[i].notes[j].name },
+              var notename=doc.notebooks[i].notes[j].name;
+              req.db.collection('usernotecollection')
+              .find({"name":user,"notebooks.notes.name": doc.notebooks[i].notes[j].name})
+              .forEach(function(usernotecollection) {
+                if (usernotecollection.notebooks) {
+                  usernotecollection.notebooks.forEach(function(notebooks) {
+                    if (notebooks.notes) {
+                      notebooks.notes.forEach(function(notes) {
+                        if (notes.name === notename) {
+                          console.log("inside array: "+notename)
+                          if(notes.revisionCount == 8)
+                          notes.revisionCount = 32;
+                        }
+                      });
+                    }
+                  });
 
-                  { $set: { "notebooks.0.notes.0.revisionCount": Number((doc.notebooks[i].notes[j].revisionCount)+6) }}, function (err, documents) {
+                  req.db.collection('usernotecollection').save(usernotecollection);
+                }
+              });
+           /*req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.notes.name":doc.notebooks[i].notes[j].name },
+
+                  { $set: { "notebooks.doc.notebooks[i].notes.doc.notebooks[i].notes[j].revisionCount": Number((doc.notebooks[i].notes[j].revisionCount)+6) }}, function (err, documents) {
                     console.log("err: "+err);
                 }
-              );
+              );*/
+              //doc.notebooks[i].notes[j].revisionCount=8;
+              //req.db.collection('usernotecollection').save();
+
+              console.log(notename);
 
 
-
-              }
 
           }
 

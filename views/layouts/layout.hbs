@@ -42,7 +42,7 @@
                  </a>
                </li>
                <li>
-                 <a href="/reminders" action="/reminders" method="get">
+                 <a href="/reminders" onclick="theFunction()">
                    <span class="icon is-small"><i class="fa fa-bell"></i></span>
                    <span>Reminders</span>
                  </a>
@@ -93,6 +93,17 @@
     {{#each scripts}}
       <script src="/javascripts/{{this}}"></script>
     {{/each}}
+
+    <script type="text/javascript">
+        function theFunction () {
+            // return true or false, depending on whether you want to allow the `href` property to follow through or not
+            $.ajax({
+              type:"get",
+              async: false,
+              url: '/reminders'
+              });
+        }
+    </script>
 
  </body>
 </html>
