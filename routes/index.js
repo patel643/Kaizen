@@ -338,34 +338,46 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
                 doc.notebooks[i].notes[j].revisionCount=2;
             //  console.log(new Date(doc.notebooks[i].notes[j].createdDate).getFullYear());
               var cdate=new Date(doc.notebooks[i].notes[j].createdDate);
+              cdate.setDate(cdate.getDate() + doc.notebooks[i].notes[j].revisionCount);
               var cdated=new Date(doc.notebooks[i].notes[j].createdDate).getDate();
               var cdatem=new Date(doc.notebooks[i].notes[j].createdDate).getMonth();
               var cdatey=new Date(doc.notebooks[i].notes[j].createdDate).getFullYear();
-              cdate.setDate(cdate.getDate() + doc.notebooks[i].notes[j].revisionCount);
+              var cdate=cdated+'/'+cdatem+'/'+cdatey;
               console.log(cdate);
 
               //rmove this next line
               cdate=new Date();
+              var cdated=cdate.getDate();
+              var cdatem=cdate.getMonth();
+              var cdatey=cdate.getFullYear();
+              var cdate=cdated+'/'+cdatem+'/'+cdatey;
               var tdate=(new Date());
-              if(+cdate == +tdate){
+              var tdated=tdate.getDate();
+              var tdatem=tdate.getMonth();
+              var tdatey=tdate.getFullYear();
+              var tdate=tdated+'/'+tdatem+'/'+tdatey;
+              if(cdate == tdate){
                 var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
                 arr.push(temp);
               }
           if(doc.notebooks[i].notes[j].revisionCount == 2)
               {
-                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.$[i].notes.$[j].name":doc.notebooks[i].notes[j].name },
+                 req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.$.notes.$.name":doc.notebooks[i].notes[j].name },
 
-                  { $set: { "notebooks.$[i].notes.$[j].createdDate": cdate }}, function (err, documents) {
+                  { $set: { "notebooks.0.notes.0.revisionCount": Number((doc.notebooks[i].notes[j].revisionCount)+6) }}, function (err, documents) {
                     console.log("err: "+err);
                 }
-                );
+              );
+
+
+
               }
 
           }
 
         }
     }
-});console.log(arr);
+});
   res.render('reminders',{user: req.user.displayName, arr:arr});
 })
 

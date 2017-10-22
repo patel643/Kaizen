@@ -68,7 +68,7 @@ $(function(){
              "access": $('#access').val(),
              "notebookname": $('#notebookname').val().trim(),
              //"description": $('#description').val(),
-             "revisionCount": 2,
+
              "notes": [],
              "flashcards":[]
        };
@@ -105,7 +105,8 @@ $(function(){
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
                     "access": "public",
-                    "createdDate": new Date()};
+                    "createdDate": new Date(),
+                  "revisionCount": 2,};
       $.ajax({
         url: '/user/notebook/notes',
         type: 'POST',
