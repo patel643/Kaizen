@@ -5,14 +5,15 @@ $("#searchbutton").click(function() {
     $("#ajax-content").empty().append("<div id='loading'><img src='images/loading.gif' alt='Loading' /></div>");
     // $("#nav li a").removeClass('current');
     // $(this).addClass('current');
-    var val ="value"; //$('#searcharea').val().trim();
+    var val = {"searchkey":$('#searcharea').val()};
     $.ajax({
         url: '/search/'+$('#searcharea').val(),
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({"searchkey":val}),
-      }).done(function() {
-          // location.reload();
+        data: JSON.stringify(val),
+      }).done(function(data) {
+            $("#ajax-content").append(JSON.stringify(data));
+            console.log(data);
       });
     });
 
