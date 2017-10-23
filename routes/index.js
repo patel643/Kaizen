@@ -19,7 +19,7 @@ router.post('/search/:searchkey',function(req,res,next){
   var key = new RegExp(req.params.searchkey);
   console.log("searching for " + key);
 
-  var allResults = {};
+  var allResults = [];
   //GET notes which are public notes
   req.db.collection('usernotecollection').aggregate(
   [
@@ -61,9 +61,10 @@ router.post('/search/:searchkey',function(req,res,next){
     }
    }],
    function(err, results) {
-        allResults.push(results);
+        allResults.push.apply(results);
         console.log('logged in sending later');
         //res.send(allResults);
+        console.log(results);
         res.render('searchlist.hbs',{layout:false,notes: allResults});
         console.log("searchlist loaded");
       });

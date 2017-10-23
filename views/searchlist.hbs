@@ -1,5 +1,8 @@
 <div class="box">
 <script>console.log(notes)</script>
+{{#unless notes.length}}
+    <p>No matching notes found</p>
+{{/unless}}
 {{#each notes}}
  <ul class="timeline">
    <li class="timeline-event">
@@ -11,20 +14,6 @@
        {{#each this.notebooks.notes}}
           <p>{{ this}}</p>
        {{/each}}
-
-       <!-- <nav class="level is-mobile">
-         <div class="level-left">
-           <a onClick="note({{{json this}}});" class="level-item">
-             <span class="icon is-small"><i class="fa fa-pencil fa-1.5x"></i></span>
-           </a>
-           <a onClick="deleteNote({{{json this.name}}});"class="level-item">
-             <span class="icon is-small"><i class="fa fa-trash fa-1.5x"></i></span>
-           </a>
-           <a class="level-item">
-             <span class="icon is-small"><i class="fa fa-heart fa-1.5x"></i></span>
-           </a>
-         </div>
-       </nav> -->
      </div>
    </li>
  </ul>
