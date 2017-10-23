@@ -399,8 +399,8 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
         }
     }
 });
-  res.render('reminders',{user: req.user.displayName, arr:arr});
-})
+  res.render('reminders',{  user: req.user, arr:arr});
+});
 
 
 
