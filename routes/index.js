@@ -344,62 +344,52 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
           for(var j=0;j<doc.notebooks[i].notes.length;j++){
 
             //  console.log(new Date(doc.notebooks[i].notes[j].createdDate).getFullYear());
-              var cdate=new Date(doc.notebooks[i].notes[j].createdDate);
-              cdate.setDate(cdate.getDate() + doc.notebooks[i].notes[j].revisionCount);
-              var cdated=new Date(doc.notebooks[i].notes[j].createdDate).getDate();
-              var cdatem=new Date(doc.notebooks[i].notes[j].createdDate).getMonth();
-              var cdatey=new Date(doc.notebooks[i].notes[j].createdDate).getFullYear();
-              var cdate=cdated+'/'+cdatem+'/'+cdatey;
-              console.log(cdate);
+              var cdate=new Date(doc.notebooks[i].notes[j].createdDate)
+              var cdate2=new Date(doc.notebooks[i].notes[j].createdDate);
+              var cdate6=new Date(doc.notebooks[i].notes[j].createdDate);
+              var cdate10=new Date(doc.notebooks[i].notes[j].createdDate);
+              var cdate30=new Date(doc.notebooks[i].notes[j].createdDate);
+              var cdate60=new Date(doc.notebooks[i].notes[j].createdDate);
+
+              cdate2.setDate(cdate2.getDate()+2);
+              cdate6.setDate(cdate6.getDate()+6);
+              cdate10.setDate(cdate10.getDate()+10);
+              cdate30.setDate(cdate30.getDate()+30);
+              cdate60.setDate(cdate60.getDate()+60);
+              var cdated2=cdate2.getDate();
+              var cdated6=cdate6.getDate();
+              var cdated10=cdate10.getDate();
+              var cdated30=cdate30.getDate();
+              var cdated60=cdate60.getDate();
+              var cdatem=cdate.getMonth()+1;
+              var cdatey=cdate.getFullYear();;
+              cdate2=cdated2+'/'+cdatem+'/'+cdatey;
+              cdate6=cdated6+'/'+cdatem+'/'+cdatey;
+              cdate10=cdated10+'/'+cdatem+'/'+cdatey;
+              cdate30=cdated30+'/'+cdatem+'/'+cdatey;
+              cdate60=cdated60+'/'+cdatem+'/'+cdatey;
+
+
+              console.log("cdate"+cdate2+cdate6+cdate10+cdate30+cdate60);
 
               //rmove these next few lines
-              cdate=new Date();
+              /*cdate=new Date();
               var cdated=cdate.getDate();
               var cdatem=cdate.getMonth();
               var cdatey=cdate.getFullYear();
-              var cdate=cdated+'/'+cdatem+'/'+cdatey;
+              var cdate=cdated+'/'+cdatem+'/'+cdatey;*/
               //
 
               var tdate=(new Date());
               var tdated=tdate.getDate();
-              var tdatem=tdate.getMonth();
+              var tdatem=tdate.getMonth()+1;
               var tdatey=tdate.getFullYear();
-              var tdate=tdated+'/'+tdatem+'/'+tdatey;
-              if(cdate == tdate){
-                var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate, doc.notebooks[i].notes[j].revisionCount];
+              tdate=tdated+'/'+tdatem+'/'+tdatey;
+              console.log("tdate"+tdate);
+              if(cdate2 == tdate || cdate6 == tdate || cdate10 == tdate || cdate30 == tdate || cdate60 == tdate){
+                var temp=[doc.notebooks[i].notebookname,doc.notebooks[i].notes[j].name, doc.notebooks[i].notes[j].createdDate];
                 arr.push(temp);
               }
-              var notename=doc.notebooks[i].notes[j].name;
-              req.db.collection('usernotecollection')
-              .find({"name":user,"notebooks.notes.name": doc.notebooks[i].notes[j].name})
-              .forEach(function(usernotecollection) {
-                if (usernotecollection.notebooks) {
-                  usernotecollection.notebooks.forEach(function(notebooks) {
-                    if (notebooks.notes) {
-                      notebooks.notes.forEach(function(notes) {
-                        if (notes.name === notename) {
-                          console.log("inside array: "+notename)
-                          if(notes.revisionCount == 8)
-                          notes.revisionCount = 32;
-                        }
-                      });
-                    }
-                  });
-
-                  req.db.collection('usernotecollection').save(usernotecollection);
-                }
-              });
-           /*req.db.collection('usernotecollection').updateOne({"name":user,"notebooks.notes.name":doc.notebooks[i].notes[j].name },
-
-                  { $set: { "notebooks.doc.notebooks[i].notes.doc.notebooks[i].notes[j].revisionCount": Number((doc.notebooks[i].notes[j].revisionCount)+6) }}, function (err, documents) {
-                    console.log("err: "+err);
-                }
-              );*/
-              //doc.notebooks[i].notes[j].revisionCount=8;
-              //req.db.collection('usernotecollection').save();
-
-              console.log(notename);
-
 
 
           }
