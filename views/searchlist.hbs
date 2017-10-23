@@ -1,0 +1,21 @@
+<div class="box">
+<script>console.log(notes)</script>
+{{#unless notes.length}}
+    <p>No matching notes found</p>
+{{/unless}}
+{{#each notes}}
+ <ul class="timeline">
+   <li class="timeline-event">
+     <label class="timeline-event-icon"></label>
+     <div class="timeline-event-copy">
+       <div class="timeline-event-thumbnail">{{filterDate this.createdDate}}</div>
+       <h1>{{this.name}}</h1>
+       <p>{{ this.notebooks.notebookname}}</p>
+       {{#each this.notebooks.notes}}
+          <p>{{ this}}</p>
+       {{/each}}
+     </div>
+   </li>
+ </ul>
+{{/each}}
+</div>
