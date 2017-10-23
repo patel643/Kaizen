@@ -105,8 +105,7 @@ $(function(){
                     "text": n_quill.getText(),
                     "content": n_quill.getContents(),
                     "access": "public",
-                    "createdDate": new Date(),
-                    "revisionCount": 2};
+                    "createdDate": new Date()};
       $.ajax({
         url: '/user/notebook/notes',
         type: 'POST',
