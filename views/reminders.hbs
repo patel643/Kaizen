@@ -17,23 +17,48 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="../stylesheets/style.css">
-  
+  <script type='text/javascript'>
+
+(function()
+{
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }
+    else
+      localStorage.removeItem('firstLoad');
+  }
+})();
+
+</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 </head>
 
 <body>
 
-  <div id="content">
-      <img src="..\images/reminder.jpg" class="images" />
+  <div style="float:left; width:42%">
+      <img src="..\images/reminder.jpg" class="images" style="height:300px;"/>
   </div>
+  <div style="float:right; width:55% ">
+    <article class="message is-primary">
+  <div class="message-header">
+    <p>Remember to Revise today: </p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+    {{#each arr}}
+            <li>{{#each this}}
 
- <ul>{{#each arr}}
-         <ol>{{#each this}}
-           <ol>{{this}}
-             {{/each}}
-      {{/each}}
-</ul>
+              {{this}}
+                {{/each}}
+         {{/each}}</div>
+</article>
 
+
+</div>
 
 </body>
 
