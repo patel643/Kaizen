@@ -25,7 +25,8 @@ router.post('/search/:searchkey',function(req,res,next){
   [
   {"$unwind":"$notebooks"},
   {"$unwind":"$notebooks.notes"},
-  {"$match":{"notebooks.notes.name":{'$regex':key},"$and":[{"notebooks.notes.access":"public"}]}},
+  //{"$match":{"notebooks.notes.name":{'$regex':key},"$and":[{"notebooks.notes.access":"public"}]}},
+  {"$match":{"notebooks.notes.name":{'$regex':key},"notebooks.notes.text":{'$regex':key},"notebooks.notes.access":/public/}},
   {"$project":{
      "name":1,
      "notebooks.notebookname":1,
@@ -52,7 +53,7 @@ router.post('/search/:searchkey',function(req,res,next){
    [
    {"$unwind":"$notebooks"},
    {"$unwind":"$notebooks.notes"},
-   {"$match":{"name":{'$regex':dispN},"notebooks.notes.name":{'$regex':key},"$and":[{"notebooks.notes.access":"private"}]}},
+   {"$match":{"name":{'$regex':dispN},"notebooks.notes.name":{'$regex':key},"notebooks.notes.text":{'$regex':key},"notebooks.notes.access":/private/}},
    {"$project":{
       "name":1,
       "notebooks.notebookname":1,
@@ -61,10 +62,12 @@ router.post('/search/:searchkey',function(req,res,next){
     }
    }],
    function(err, results) {
-        allResults.push.apply(results);
+        allResults.push.apply(allResults,results);
         console.log('logged in sending later');
         //res.send(allResults);
-        console.log(results);
+        console.log(JSON.stringify(results));
+        console.log("-----------");
+        console.log(JSON.stringify(allResults));
         res.render('searchlist.hbs',{layout:false,notes: allResults});
         console.log("searchlist loaded");
       });
