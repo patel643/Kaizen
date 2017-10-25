@@ -79,10 +79,6 @@ router.post('/search/:searchkey',function(req,res,next){
 });
 
 router.get('/global', function(req, res, next){
-  // req.db.collection('usernotecollection').find({ "notebooks.access":"private"}).toArray(function(err, results){
-  //   console.log(results[0].notebooks.notebookname);
-  //   });
-
     req.db.collection('usernotecollection').aggregate(
     [
     {"$unwind":"$notebooks"},
@@ -92,17 +88,14 @@ router.get('/global', function(req, res, next){
        "name":1,
        "notebooks.notebookname":1,
        "notebooks.notes.name":1,
-       "notebooks.notes.text":1
+       "notebooks.notes.text":1,
+       "notebooks.notes.content":1
      }
     }],
     function(err, results) {
-        //allResults.push.apply(allResults,results);
-
          console.log(JSON.stringify(results));
          console.log("----------------------------------------");
-        // console.log(JSON.stringify(allResults));
          res.render('global.hbs',{user: req.user, notes: results});
-         //console.log("searchlist loaded");
        });
 });
 

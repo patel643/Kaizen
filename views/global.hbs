@@ -22,8 +22,87 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="../stylesheets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script type='text/javascript'>
+
+(function()
+{
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }
+    else
+      localStorage.removeItem('firstLoad');
+
+      var quillModule =  {
+        modules: {
+          toolbar: [
+          ]
+        },
+        placeholder: 'Compose an epic...',
+            theme: 'snow'
+      };
+
+      viewNote = function(content) {
+        var quill = new Quill('#editor', quillModule);
+        quill.disable();
+        quill.setContents(content);
+        $(".viewModel").addClass("is-active");
+      };
+
+      cancelModel = function() {
+        $(".viewModel").removeClass("is-active");
+      };
+  }
+})();
+
+
+</script>
 </head>
 <body>
+
+  {{#each notes}}
+
+  <article class="media">
+    <div class="media-left">
+      <figure class="image is-64x64">
+        <img src="../images/search.png" alt="Image">
+      </figure>
+    </div>
+    <div class="media-content">
+      <div class="content">
+        <h1>{{this.name}}</h1>
+        <p>{{ this.notebooks.notebookname}}</p>
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <a class="level-item" onClick="viewNote({{{json this.notebooks.notes.content}}});" class="button is-link">
+              <span class="icon is-small"><i class="fa fa-eye"></i></span>View Note</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </article>
+  {{/each}}
+  </div>
+
+  <div id="model" class="modal viewModel">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">View Note</p>
+        <button onClick="cancelModel();" id="cancel" class="modal-close" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div id="editor">
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button  onClick="cancelModel();" class="button cancelModel">Cancel</button>
+      </footer>
+    </div>
+  </div>
 
 </body>
 
