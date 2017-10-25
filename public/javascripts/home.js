@@ -49,14 +49,21 @@ $(function(){
     });
 
     $("#addNote").click(function(){
-      $(".n_notemodel").addClass("is-active");
-      $("#n_noteName").val('');
+      if(notebooks.length==0){
+        alert("Please add a notebook first");
+      }else{
+        $(".n_notemodel").addClass("is-active");
+        $("#n_noteName").val('');
+      }
     });
 
     $("#addFlashcard").click(function(){
+      if(notebooks.length==0){
+        alert("Please add a notebook first");
+      }else{
       $(".n_flashmodel").addClass("is-active");
       $("#n_flashFront").val('');
-      $("#n_flashBack").val('');
+      $("#n_flashBack").val('');}
     });
 
     $("#editFlashcard").click(function(){
