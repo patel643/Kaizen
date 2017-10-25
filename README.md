@@ -4,14 +4,16 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 
 ## App Info:
 
-* Team Name: TODO
-* App Name: TODO
-* App Link: <https://TODO.herokuapp.com/>
+* Team Name: WonderDevils
+* App Name: Kaizen
+* App Link: <https://ancient-depths-98010.herokuapp.com/>
 
 ### Students
 
-* First Last, x500@umn.edu
-* ...
+* Rahul Bora, bora0072@umn.edu
+* Kiran Ravindra ,ravin047@umn.edu
+* Nidhi Patel, patel643@umn.edu
+* Yinqiao Zheng, zheng928@umn.edu
 
 
 ## Key Features
@@ -19,15 +21,42 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
-
+* Public and private user display
+* Private search
+* Reminder settings
+* Authentication
 
 ## Screenshots of Site
 
 **[Add a screenshot of each key page (maximum 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
+along with a very brief caption:
 
-![](https://media.giphy.com/media/XIqCQx02E1U9W/giphy.gif)
+MainPage of our website, it shows your notebooks, notes and reminders.
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/MainPage.png)
+
+
+Welcome page. Reminder is our biggest feature and it is based on the forgetting curve below. 
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/ExplorePage.png)
+
+
+
+Reminders will be sent to you to revise your notes in time.
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/ReminderPage.png)
+
+
+Use flashcards to help to remember! Move your pointer near flashcards, flip them back and see if you get the idea right.
+
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/RevisePage.png)
+
+
 
 
 ## External Dependencies
@@ -35,8 +64,10 @@ along with a very brief caption:**
 **Document integrations with 3rd Party code or services here.
 Please do not document required libraries (e.g., Express, Bulma).**
 
-* Library or service name: description of use
-* ...
+* Express
+* Bulma
+* auth0
+* Passport
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
