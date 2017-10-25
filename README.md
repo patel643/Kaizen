@@ -4,14 +4,16 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 
 ## App Info:
 
-* Team Name: TODO
-* App Name: TODO
+* Team Name: WonderDevils
+* App Name: Kaizen
 * App Link: <https://TODO.herokuapp.com/>
 
 ### Students
 
-* First Last, x500@umn.edu
-* ...
+* Rahul Bora, bora0072@umn.edu
+* Kiran Ravindra ,ravin047@umn.edu
+* Nidhi Patel, patel643@umn.edu
+* Yinqiao Zheng, zheng928@umn.edu
 
 
 ## Key Features
