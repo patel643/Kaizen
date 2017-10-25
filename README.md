@@ -29,9 +29,39 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 ## Screenshots of Site
 
 **[Add a screenshot of each key page (maximum 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:MainPage of our website, it shows your notebooks, notes and reminders.
+along with a very brief caption:
+
+MainPage of our website, it shows your notebooks, notes and reminders.
+
 
 ![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/MainPage.png)
+
+
+Welcome page. Reminder is our biggest feature and it is based on the forgetting curve below. 
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/ExplorePage.png)
+
+
+See all public notes here. Study is about sharing!
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/PublicNotesPage.png)
+
+
+Reminders will be sent to you to revise your notes in time.
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/ReminderPage.png)
+
+
+Use flashcards to help to remember! Move your pointer near flashcards, flip them back and see if you get the idea right.
+
+
+
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/RevisePage.png)
+
+
 
 
 ## External Dependencies
