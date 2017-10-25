@@ -419,7 +419,7 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
               tdate=tdated+'/'+tdatem+'/'+tdatey;
               console.log("tdate"+tdate);
               if(cdate2 == tdate || cdate6 == tdate || cdate10 == tdate || cdate30 == tdate || cdate60 == tdate){
-                var temp=[doc.notebooks[i].notebookname,": "+doc.notebooks[i].notes[j].name];
+                var temp={"bookname": doc.notebooks[i].notebookname, "notename" : doc.notebooks[i].notes[j].name, "notes":doc.notebooks[i].notes[j].text };
                 arr.push(temp);
               }
 
