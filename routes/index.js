@@ -419,7 +419,9 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
               tdate=tdated+'/'+tdatem+'/'+tdatey;
               console.log("tdate"+tdate);
               if(cdate2 == tdate || cdate6 == tdate || cdate10 == tdate || cdate30 == tdate || cdate60 == tdate){
-                var temp={"bookname": doc.notebooks[i].notebookname, "notename" : doc.notebooks[i].notes[j].name, "notes":doc.notebooks[i].notes[j].text };
+
+                var temp={"bookname": doc.notebooks[i].notebookname,"notename":doc.notebooks[i].notes[j].name, "content": doc.notebooks[i].notes[j].content };
+
                 arr.push(temp);
               }
 
@@ -429,6 +431,7 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
         }
     }
 });
+
   res.render('reminders',{  user: req.user, arr:arr});
 });
 
