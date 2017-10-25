@@ -31,7 +31,7 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 **[Add a screenshot of each key page (maximum 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
 along with a very brief caption:MainPage of our website, it shows your notebooks, notes and reminders.
 
-![](https://media.giphy.com/media/XIqCQx02E1U9W/giphy.gif)
+![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/MainPage.png)
 
 
 ## External Dependencies
