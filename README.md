@@ -21,8 +21,10 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
-
+* Public and private user display
+* Private search
+* Reminder settings
+* Authentication
 
 ## Screenshots of Site
 
@@ -37,8 +39,10 @@ along with a very brief caption:**
 **Document integrations with 3rd Party code or services here.
 Please do not document required libraries (e.g., Express, Bulma).**
 
-* Library or service name: description of use
-* ...
+* Express
+* Bulma
+* autho0
+* Passport
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
