@@ -419,7 +419,7 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
               var tdatey=tdate.getFullYear();
               tdate=tdated+'/'+tdatem+'/'+tdatey;
               if(cdate2 == tdate || cdate6 == tdate || cdate10 == tdate || cdate30 == tdate || cdate60 == tdate){
-                var temp={"bookname": doc.notebooks[i].notebookname,"notename":doc.notebooks[i].notes[j].name};
+                var temp={"bookname": doc.notebooks[i].notebookname,"notename":doc.notebooks[i].notes[j].name, "content": doc.notebooks[i].notes[j].content };
                 arr.push(temp);
                 count++;
               }
@@ -430,6 +430,8 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
         }
     }
 });
+console.log("reminderss");
+console.log(arr);
   res.render('reminders',{  user: req.user, arr:arr, count:count});
 });
 
