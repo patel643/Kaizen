@@ -13,12 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.min.css" integrity="sha256-spCEAaZMKebC3rE/ZTt8jITn65b0Zan45WXblWjyDyQ=" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="../stylesheets/hero.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-
   <script> var items = "{{items}}"; </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="../stylesheets/style.css">
-
   <script type='text/javascript'>
 
 (function()
@@ -40,9 +38,7 @@
 </head>
 
 <body>
-<script>
-var count={{count}};
-</script>
+
   <div style="float:left; width:42%">
       <img src="..\images/reminder.jpg" class="images" style="height:300px;"/>
   </div>
@@ -53,13 +49,13 @@ var count={{count}};
 
   </div>
   <div class="message-body">
-
     {{#each arr}}
-    <li>{{this.bookname}} :  {{this.notename}}
-    {{/each}}
-  </div>
-</article>
+            <li>{{#each this}}
 
+              {{this}}
+                {{/each}}
+         {{/each}}</div>
+</article>
 
 
 </div>

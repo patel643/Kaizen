@@ -6,15 +6,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css'>
     <link rel="icon" href="/favicon.ico">
-    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript">
-    function savesubcat(that){
-$('#menu li a').removeClass('active')
-$(that).addClass('active')
-
-}
-</script>
   </head>
   <body>
     <nav class="navbar is-primary">
@@ -30,39 +21,32 @@ $(that).addClass('active')
 
         <div class="navbar-menu">
          <div class="navbar-start">
-           <div class="tabs is-boxed" >
-             <ul class="tabsControl" id="menu">
-               <li class="is-active"  onclick='savesubcat(this)'>
+           <div class="tabs is-boxed">
+             <ul class="tabsControl">
+               <li class="is-active">
                  <a href="/">
                    <span class="icon is-small"><i class="fa fa-search"></i></span>
                    <span>Explore</span>
                  </a>
                </li>
-               <li class="" onclick='savesubcat(this)'>
-                 <a href="/global">
-                   <span class="icon is-small"><i class="fa fa-book"></i></span>
-                   <span>View Global Notebooks</span>
-                 </a>
-               </li>
-               <li class="" onclick='savesubcat(this)'>
+               <li>
                  <a href="/home">
                    <span class="icon is-small"><i class="fa fa-book"></i></span>
                    <span>Notebooks</span>
                  </a>
                </li>
-               <li class="" onclick='savesubcat(this)'>
+               <li>
                  <a href="/flashcards" >
                    <span class="icon is-small"><i class="fa fa-bolt"></i></span>
                    <span>Revise</span>
                  </a>
                </li>
-               <li class="" onclick='savesubcat(this)'>
+               <li>
                  <a href="/reminders">
                    <span class="icon is-small"><i class="fa fa-bell"></i></span>
                    <span>Reminders</span>
                  </a>
                </li>
-
              </ul>
            </div>
          </div>
