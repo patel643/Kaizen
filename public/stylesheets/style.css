@@ -152,17 +152,24 @@ margin: 10px;
 .front {
 	z-index: 2;
 	transform: rotateY(0deg);
-  background-color: #FFFFE0;
+  background-color: #FFFFEF;
 
 border: 1px solid gray;
 box-shadow: 1px 1px 3px #888;
-border: 20px solid #AFEEEE;
+border: 20px solid #1ABC9C;
 }
 
 .back {
 	transform: rotateY(180deg);
-    background-color: #AFEEEE;
+    background-color: #1ABC9C;
     border: 1px solid gray;
     box-shadow: 1px 1px 3px #888;
-    border: 20px solid #FFFFE0;
+    border: 20px solid #FFFFEF;
+}
+
+.active {
+  text-align: left;
+  color: #fff;
+  background-color: #ffbb00;
+  text-decoration: none;
 }

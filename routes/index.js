@@ -202,6 +202,55 @@ router.put('/user/notebook/notes/:noteName', function(req, res, next){
   });
 });
 
+router.get('/global', function(req, res, next){
+  // req.db.collection('usernotecollection').find({ "notebooks.access":"private"}).toArray(function(err, results){
+  //   console.log(results[0].notebooks.notebookname);
+  //   });
+
+    req.db.collection('usernotecollection').aggregate(
+    [
+    {"$unwind":"$notebooks"},
+    {"$unwind":"$notebooks.notes"},
+    {"$match":{ "notebooks.access":/Public/}},
+    {"$project":{
+       "name":1,
+       "notebooks.notebookname":1,
+       "notebooks.notes.name":1,
+       "notebooks.notes.text":1
+     }
+    }],
+    function(err, results) {
+        //allResults.push.apply(allResults,results);
+
+         console.log(JSON.stringify(results));
+         console.log("----------------------------------------");
+        // console.log(JSON.stringify(allResults));
+         res.render('global.hbs',{user: req.user, notes: results});
+         //console.log("searchlist loaded");
+       });
+});
+
+
+
+router.put('/home/notebook/notes/:noteName', function(req, res, next){
+  //extract all notes for give particular notebook
+  //Query to get all notes for a particular user
+  req.db.collection('usernotecollection').find({}, { "notebooks.notebookname":  notebook,'notebooks.notes':1}).toArray(function (err, results) {
+        //res.send(getObjects(results, 'notebookname', 'notebook1')[0].notes);
+        var publicNotes = getObjects(results, 'notebookname', notebook)[0].notes;
+        for(var i=0; i<publicNotes.length; i++){
+            if(publicNotes[i].name == req.params.noteName){
+              publicNotes[i].content = req.body.content;
+              publicNotes[i].text = req.body.text;
+            }
+        }
+        //Now again make a call to the db and push back all the notes to the particular notebook
+
+  });
+});
+
+
+
 
 //Editing a flashCard
 router.put('/user/notebook/flashcards/:flashName', function(req, res, next){
@@ -322,6 +371,7 @@ router.get('/flashcards', ensureLoggedIn('/login'), function(req, res, next) {
 //   });
 // });
 var arr=[];
+var count=0;
 router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
   var user=req.user.displayName;
 
@@ -329,23 +379,13 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
    remindata.each(function (err, doc) {
 
     if (doc != null) {
-        console.dir(doc);
+        //console.dir(doc);
         arr=[];
-        /*console.log(doc.notebooks.length);
+        count=0;
         for(var i=0;i<doc.notebooks.length;i++)
         {
-          var temp=[doc.notebooks[i].frequency,doc.notebooks[i].multiplier];
-          arr.push(temp);
-        }*/
-      //  console.dir(JSON.stringify(doc.notebooks.notes));
-      console.log(doc.notebooks.length);
-        for(var i=0;i<doc.notebooks.length;i++)
-        {
-          console.log(doc.notebooks[i].notebookname);
-          console.log(doc.notebooks[i].notes.length);
           for(var j=0;j<doc.notebooks[i].notes.length;j++){
 
-            //  console.log(new Date(doc.notebooks[i].notes[j].createdDate).getFullYear());
               var cdate=new Date(doc.notebooks[i].notes[j].createdDate)
               var cdate2=new Date(doc.notebooks[i].notes[j].createdDate);
               var cdate6=new Date(doc.notebooks[i].notes[j].createdDate);
@@ -371,26 +411,15 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
               cdate30=cdated30+'/'+cdatem+'/'+cdatey;
               cdate60=cdated60+'/'+cdatem+'/'+cdatey;
 
-
-              console.log("cdate"+cdate2+cdate6+cdate10+cdate30+cdate60);
-
-              //rmove these next few lines
-              /*cdate=new Date();
-              var cdated=cdate.getDate();
-              var cdatem=cdate.getMonth();
-              var cdatey=cdate.getFullYear();
-              var cdate=cdated+'/'+cdatem+'/'+cdatey;*/
-              //
-
               var tdate=(new Date());
               var tdated=tdate.getDate();
               var tdatem=tdate.getMonth()+1;
               var tdatey=tdate.getFullYear();
               tdate=tdated+'/'+tdatem+'/'+tdatey;
-              console.log("tdate"+tdate);
               if(cdate2 == tdate || cdate6 == tdate || cdate10 == tdate || cdate30 == tdate || cdate60 == tdate){
-                var temp=[doc.notebooks[i].notebookname,": "+doc.notebooks[i].notes[j].name];
+                var temp={"bookname": doc.notebooks[i].notebookname,"notename":doc.notebooks[i].notes[j].name};
                 arr.push(temp);
+                count++;
               }
 
 
@@ -399,7 +428,7 @@ router.get('/reminders',ensureLoggedIn('/login'), function(req, res, next) {
         }
     }
 });
-  res.render('reminders',{  user: req.user, arr:arr});
+  res.render('reminders',{  user: req.user, arr:arr, count:count});
 });
 
 
