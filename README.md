@@ -43,11 +43,6 @@ Welcome page. Reminder is our biggest feature and it is based on the forgetting 
 ![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/ExplorePage.png)
 
 
-See all public notes here. Study is about sharing!
-
-
-![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/PublicNotesPage.png)
-
 
 Reminders will be sent to you to revise your notes in time.
 
