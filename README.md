@@ -66,7 +66,7 @@ Please do not document required libraries (e.g., Express, Bulma).**
 
 * Express
 * Bulma
-* autho0
+* auth0
 * Passport
 
 **If there's anything else you would like to disclose about how your project
