@@ -13,7 +13,7 @@ $(function(){
 
     var n_quill = new Quill('#n_editor', quillModule);
     var quill = new Quill('#editor', quillModule);
-
+    console.log(quill);
     note = function(note) { //now has global scope.
       $('#noteName').val(note.name);
       quill.setContents(note.content);

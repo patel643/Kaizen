@@ -31,16 +31,17 @@ router.post('/search/:searchkey',function(req,res,next){
      "name":1,
      "notebooks.notebookname":1,
      "notebooks.notes.name":1,
-     "notebooks.notes.text":1
+     "notebooks.notes.text":1,
+     "notebooks.notes.content":1
  }
  } ],
   function(err, results) {
       //console.log(results);
       allResults = results;
       if(!req.user){
-        console.log('not logged in sending right now');
-        console.log(allResults);
-        res.render('searchlist.hbs',{layout:false,notes: allResults});
+        console.log('not logged in sending ggright now');
+        console.log(allResults.notes);
+        res.render('searchlist',{layout:false,notes: allResults});
         console.log("searchlist loaded");
       }
     }
@@ -60,17 +61,18 @@ router.post('/search/:searchkey',function(req,res,next){
       "name":1,
       "notebooks.notebookname":1,
       "notebooks.notes.name":1,
-      "notebooks.notes.text":1
+      "notebooks.notes.text":1,
+      "notebooks.notes.content":1
     }
    }],
    function(err, results) {
         allResults.push.apply(allResults,results);
-        console.log('logged in sending later');
+        console.log('logged in sendinggggg later');
         //res.send(allResults);
-        console.log(JSON.stringify(results));
+        console.log(JSON.stringify(results.notes));
         console.log("-----------");
-        console.log(JSON.stringify(allResults));
-        res.render('searchlist.hbs',{layout:false,notes: allResults});
+        console.log(JSON.stringify(allResults.notes));
+        res.render('searchlist',{layout:false,notes: allResults});
         console.log("searchlist loaded");
       });
  }

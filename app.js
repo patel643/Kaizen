@@ -28,7 +28,8 @@ var exphbs  = require('express-handlebars');
 
 app.engine('hbs', exphbs({defaultLayout: 'layout', extname: '.hbs', helpers: { // This was missing
     json:function(context) {
-      return JSON.stringify(context).replace(/"/g, '&quot;');
+      if(context!=undefined){
+      return JSON.stringify(context).replace(/"/g, '&quot;');}
     },
     substring:function(context) {
       if(context){

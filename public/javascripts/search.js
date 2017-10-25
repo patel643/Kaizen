@@ -1,7 +1,6 @@
 $(function() {
 $("#searchbutton").click(function() {
-    console.log("here");
-
+    //console.log("here");
     $("#ajax-content").empty().append("<div id='loading'><img src='images/loading.gif' alt='Loading' /></div>");
     // $("#nav li a").removeClass('current');
     // $(this).addClass('current');
@@ -18,9 +17,29 @@ $("#searchbutton").click(function() {
       });
     });
 
-//$("#ajax-content").empty().append("<div id='loading'><img src='images/loading.gif' alt='Loading' /></div>");
-$.ajax({ url: '/features',success: function(returnedData) {
-        $("#ajax-content").html(returnedData);
-}
-});
+    var quillModule =  {
+      modules: {
+        toolbar: [
+        ]
+      },
+      placeholder: 'Compose an epic...',
+          theme: 'snow'
+    };
+
+    viewNote = function(content) {
+      var quill = new Quill('#editor', quillModule);
+      quill.disable();
+      quill.setContents(content);
+      $(".viewModel").addClass("is-active");
+    };
+
+    cancelModel = function() {
+      $(".viewModel").removeClass("is-active");
+    };
+
+    //$("#ajax-content").empty().append("<div id='loading'><img src='images/loading.gif' alt='Loading' /></div>");
+    $.ajax({ url: '/features',success: function(returnedData) {
+            $("#ajax-content").html(returnedData);
+    }
+    });
 });
