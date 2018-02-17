@@ -1,6 +1,7 @@
-# Module 2 Group Assignment: Generation Station
+# Kaizen
 
-CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/d/1Z_NWRqz4M6dhsfzU2l9alMWpy0PK0xj38uP8qPEZvdY/edit?usp=sharing)
+Done as part of CSCI 5117, Fall 2017
+[assignment description](https://docs.google.com/document/d/1Z_NWRqz4M6dhsfzU2l9alMWpy0PK0xj38uP8qPEZvdY/edit?usp=sharing)
 
 ## App Info:
 
@@ -18,9 +19,6 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 
 ## Key Features
 
-**Describe the most challenging features you implemented
-(one sentence per bullet, maximum 4 bullets):**
-
 * Public and private user display
 * Private search
 * Reminder settings
@@ -28,10 +26,8 @@ CSCI 5117, Fall 2017, [assignment description](https://docs.google.com/document/
 
 ## Screenshots of Site
 
-**[Add a screenshot of each key page (maximum 4)](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:
 
-MainPage of our website, it shows your notebooks, notes and reminders.
+MainPage of our website shows your notebooks, notes and reminders.
 
 
 ![](https://github.com/umn-5117-f17/module-2-group-assignment-wonderdevils/blob/master/public/images/MainPage.png)
@@ -61,20 +57,14 @@ Use flashcards to help to remember! Move your pointer near flashcards, flip them
 
 ## External Dependencies
 
-**Document integrations with 3rd Party code or services here.
-Please do not document required libraries (e.g., Express, Bulma).**
-
 * Express
 * Bulma
 * auth0
 * Passport
 * QuillJs
 
-**If there's anything else you would like to disclose about how your project
-relied on external code, expertise, or anything else, please disclose that
-here:**
 
-//////////////CODE FROM PROJECT TEMPLATE BY MAX////////////////
+
 # Express Project Template
 
 Features:
